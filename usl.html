@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>马年除夕·小然满屏祝福累积</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 40%, #1f1735, #080414);
+            font-family: 'PingFang SC', '华文楷体', 'KaiTi', 'Microsoft YaHei', cursive, sans-serif;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        /* 背景星星 */
+        .static-star {
+            position: fixed;
+            color: rgba(255, 225, 140, 0.2);
+            font-size: 0.9rem;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* 署名 - 小然 */
+        .signature {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(10, 8, 18, 0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid #b39257;
+            color: #ecdbb0;
+            padding: 0.2rem 1.1rem;
+            border-radius: 60px;
+            font-size: 0.75rem;
+            z-index: 300;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .signature span {
+            color: #ffdb8e;
+        }
+
+        /* 点击提示 */
+        .tap-hint {
+            position: fixed;
+            bottom: 15px;
+            left: 15px;
+            background: rgba(10, 8, 18, 0.45);
+            backdrop-filter: blur(5px);
+            border: 1px solid #9e854b;
+            color: #eadbba;
+            padding: 0.2rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            z-index: 400;
+            pointer-events: none;
+            animation: softPulse 2s infinite;
+        }
+
+        @keyframes softPulse {
+            0%,100% { opacity: 0.6; }
+            50% { opacity: 1; text-shadow: 0 0 8px #ffc285; }
+        }
+
+        /* 祝福卡片容器 */
+        #blessContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 200;
+        }
+
+        /* 祝福卡片 - 优雅动画，停留时间加长到4秒 */
+        .bless-card {
+            position: absolute;
+            color: #fff3dc;
+            font-weight: 600;
+            white-space: nowrap;
+            max-width: 85vw;
+            overflow: visible;
+            text-overflow: clip;
+            line-height: 1.4;
+            text-shadow: 0 0 25px #ffaa33, 0 0 50px #ff6a00, 2px 2px 0 #9c4f00;
+            opacity: 0;
+            transform: scale(0.3);
+            animation: popStayFade 4s ease-out forwards;
+            will-change: transform, opacity;
+            pointer-events: none;
+        }
+
+        /* 大号祝福 */
+        .bless-card.big {
+            font-size: 2rem;
+            text-shadow: 0 0 30px #ffbb33, 0 0 70px #ff7b00, 3px 3px 0 #a35100;
+        }
+
+        /* 小号祝福 */
+        .bless-card.small {
+            font-size: 1.2rem;
+            text-shadow: 0 0 20px #ffc107, 0 0 40px #ff8800, 2px 2px 0 #703d00;
+        }
+
+        @keyframes popStayFade {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            10% {
+                opacity: 1;
+                transform: scale(0.9);
+            }
+            20% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            80% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+        }
+
+        /* 欢迎提示 */
+        .welcome-tip {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #f5e2b2;
+            font-size: 1.2rem;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
+            padding: 0.5rem 1.8rem;
+            border-radius: 50px;
+            border: 1px solid #b4945a;
+            z-index: 500;
+            pointer-events: none;
+            white-space: nowrap;
+            opacity: 0;
+            animation: tipFade 2s ease forwards;
+        }
+
+        @keyframes tipFade {
+            0% { opacity: 0; transform: translate(-50%, -40%); }
+            15% { opacity: 0.9; transform: translate(-50%, -50%); }
+            85% { opacity: 0.9; }
+            100% { opacity: 0; transform: translate(-50%, -60%); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景星星 -->
+    <div id="star-field"></div>
+
+    <!-- 署名小然 -->
+    <div class="signature"><span>🐎</span> 小然 · 轻触祝福 <span>🧧</span></div>
+    <div class="tap-hint">👆 连续点击 · 祝福越积越多</div>
+    <div class="welcome-tip" id="welcomeMsg">🐴 小然给您拜年啦 🐴</div>
+
+    <!-- 祝福容器 -->
+    <div id="blessContainer"></div>
+
+    <script>
+        (function() {
+            // 生成背景星星
+            const starField = document.getElementById('star-field');
+            for (let i = 0; i < 20; i++) {
+                let s = document.createElement('div');
+                s.className = 'static-star';
+                s.innerText = '✦';
+                s.style.left = Math.random() * 100 + '%';
+                s.style.top = Math.random() * 100 + '%';
+                s.style.fontSize = (0.5 + Math.random() * 1.2) + 'rem';
+                s.style.opacity = 0.1 + Math.random() * 0.3;
+                starField.appendChild(s);
+            }
+
+            // 祝福容器
+            const blessContainer = document.getElementById('blessContainer');
+
+            // ---------- 祝福语池 (幽默 + 诚恳，融入小然) ----------
+            const blessings = [
+                // 幽默风趣
+                { text: '🐎 马上有钱，马上有闲，马上有对象', size: 'big' },
+                { text: '🐴 数钱数到手抽筋，骑马骑到屁股疼', size: 'big' },
+                { text: '✨ 做一匹任劳任怨但发财的千里马', size: 'big' },
+                { text: '🧨 马儿吓得跳：惊吓变惊喜', size: 'big' },
+                { text: '🍺 敬您像野马一样自由', size: 'big' },
+                { text: '🏇 马上有您才叫福', size: 'big' },
+                { text: '💨 好运跑得比马快', size: 'big' },
+                { text: '🎠 旋转木马转好运', size: 'big' },
+                { text: '💰 默念“小然祝福我”三遍', size: 'big' },
+                { text: '🐎 骑着好运狂飙', size: 'big' },
+                { text: '🥟 饺子配马肉，越吃越有', size: 'small' },
+                { text: '🎈 福气往你身上飘', size: 'small' },
+                { text: '🐎 别骑竹马了，骑金马', size: 'small' },
+                { text: '🏮 马年除夕福满屋', size: 'small' },
+                { text: '💪 要马年快乐线', size: 'small' },
+                { text: '🐴 做匹黑马惊艳所有人', size: 'small' },
+                { text: '🍾 马到成功', size: 'small' },
+                { text: '👪 全家一起奔小康', size: 'small' },
+                { text: '🎋 运势比竹高', size: 'small' },
+                { text: '🐎 烦恼全踩碎', size: 'small' },
+                { text: '🧧 马上封侯', size: 'small' },
+                { text: '✨ 金马银马不如您夸奖', size: 'small' },
+                // 诚恳走心
+                { text: '🙏 小然给长辈拜年：身子骨硬朗', size: 'big' },
+                { text: '❤️ 马年咱们继续暖着', size: 'big' },
+                { text: '🌟 小辈心意：马到成功', size: 'big' },
+                { text: '🧧 祝福不能少：出门遇贵人', size: 'big' },
+                { text: '🍵 小然以茶代酒', size: 'big' },
+                { text: '🌾 有说有笑有马有草', size: 'big' },
+                { text: '🐎 小然嘴笨祝福码得整齐', size: 'big' },
+                { text: '🧨 每一声烟花都是健康', size: 'big' },
+                { text: '✨ 把祝福炸满您屏幕', size: 'big' },
+                { text: '🏠 没马有福就行', size: 'big' },
+                { text: '💌 满屏祝福够快', size: 'big' },
+                { text: '🍊 小然远程鞠个躬', size: 'small' },
+                { text: '🎐 风生水起在马年', size: 'small' },
+                { text: '🌱 日子比蜜甜', size: 'small' },
+                { text: '🧣 天冷加衣马年加福', size: 'small' },
+                { text: '🏅 我是拉拉队', size: 'small' },
+                { text: '🍲 火锅煮好运', size: 'small' },
+                { text: '🥂 敬平安敬团圆', size: 'small' },
+                { text: '🐎 小然心意请收下', size: 'small' },
+                { text: '🙇 小然作揖', size: 'small' },
+                { text: '🎍 马年瑞气盈门', size: 'small' },
+                { text: '🏮 红灯高照福来到', size: 'small' },
+                { text: '✨ 小小祝福满满心意', size: 'small' },
+                { text: '🐴 愿您驰骋天地间', size: 'small' },
+                { text: '💝 小然祝您万事顺遂', size: 'small' }
+            ];
+
+            // 存储当前已占用的位置区域 (用于避免重叠)
+            let usedAreas = [];
+
+            // 检查新祝福是否会与现有祝福重叠
+            function isOverlap(x, y, width, height) {
+                const padding = 15; // 最小间距
+                for (let area of usedAreas) {
+                    if (!(x + width + padding < area.x ||
+                          x > area.x + area.width + padding ||
+                          y + height + padding < area.y ||
+                          y > area.y + area.height + padding)) {
+                        return true; // 重叠
+                    }
+                }
+                return false;
+            }
+
+            // 估算文本宽度 (粗略但够用)
+            function estimateWidth(text, isBig) {
+                const baseWidth = isBig ? 28 : 16; // 每个字符大概像素
+                return text.length * baseWidth;
+            }
+
+            // 获取随机不重叠位置
+            function getNonOverlapPosition(text, isBig) {
+                const maxAttempts = 150; // 增加尝试次数，因为屏幕越来越满
+                const width = estimateWidth(text, isBig);
+                const height = isBig ? 70 : 45;
+
+                for (let attempt = 0; attempt < maxAttempts; attempt++) {
+                    const x = Math.random() * (window.innerWidth - width - 40) + 20;
+                    const y = Math.random() * (window.innerHeight - height - 40) + 20;
+
+                    if (!isOverlap(x, y, width, height)) {
+                        return { x, y, width, height };
+                    }
+                }
+
+                // 实在找不到位置时，放在一个随机位置，但接受轻微重叠
+                // 同时清理一下过旧的区域？不清理，因为祝福会自然消失
+                return {
+                    x: Math.random() * (window.innerWidth - width - 40) + 20,
+                    y: Math.random() * (window.innerHeight - height - 40) + 20,
+                    width,
+                    height
+                };
+            }
+
+            // 音频相关
+            let audioCtx = null;
+
+            function initAudio() {
+                if (audioCtx) return;
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            function playFireworkSound() {
+                if (!audioCtx) initAudio();
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume().then(() => playFireworkSound());
+                    return;
+                }
+
+                const now = audioCtx.currentTime;
+
+                // 简化的烟花声（轻量）
+                const osc1 = audioCtx.createOscillator();
+                const gain1 = audioCtx.createGain();
+                osc1.type = 'triangle';
+                osc1.frequency.setValueAtTime(200, now);
+                osc1.frequency.exponentialRampToValueAtTime(80, now + 0.2);
+                gain1.gain.setValueAtTime(0.15, now);
+                gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+                osc1.connect(gain1);
+                gain1.connect(audioCtx.destination);
+
+                const osc2 = audioCtx.createOscillator();
+                const gain2 = audioCtx.createGain();
+                osc2.type = 'sine';
+                osc2.frequency.setValueAtTime(600, now + 0.05);
+                osc2.frequency.exponentialRampToValueAtTime(200, now + 0.25);
+                gain2.gain.setValueAtTime(0.08, now + 0.05);
+                gain2.gain.exponentialRampToValueAtTime(0.002, now + 0.5);
+                osc2.connect(gain2);
+                gain2.connect(audioCtx.destination);
+
+                osc1.start(now);
+                osc2.start(now + 0.05);
+                osc1.stop(now + 0.5);
+                osc2.stop(now + 0.6);
+            }
+
+            // 点击处理：不清空旧祝福，保留现有祝福，新增2-5条
+            function handleTap() {
+                // 随机生成2-5条祝福
+                const count = 2 + Math.floor(Math.random() * 4); // 2,3,4,5
+
+                // 播放烟花声
+                playFireworkSound();
+
+                // 生成祝福
+                for (let i = 0; i < count; i++) {
+                    const idx = Math.floor(Math.random() * blessings.length);
+                    const item = blessings[idx];
+                    const isBig = item.size === 'big';
+
+                    // 获取不重叠位置
+                    const pos = getNonOverlapPosition(item.text, isBig);
+
+                    // 创建祝福元素
+                    const div = document.createElement('div');
+                    div.className = 'bless-card';
+                    if (isBig) div.classList.add('big');
+                    else div.classList.add('small');
+                    div.textContent = item.text;
+
+                    div.style.left = pos.x + 'px';
+                    div.style.top = pos.y + 'px';
+
+                    // 微小随机延迟，错落有致
+                    div.style.animationDelay = (Math.random() * 0.15) + 's';
+
+                    blessContainer.appendChild(div);
+
+                    // 记录已用区域
+                    usedAreas.push({
+                        x: pos.x,
+                        y: pos.y,
+                        width: pos.width,
+                        height: pos.height
+                    });
+
+                    // 4.2秒后从usedAreas中移除该区域（稍长于动画，确保完全消失）
+                    setTimeout(() => {
+                        // 从usedAreas中移除这个区域（简单过滤，可能不完全精准，但够用）
+                        // 这里用filter移除所有匹配的区域（可能有多个相似的，但问题不大）
+                        usedAreas = usedAreas.filter(area =>
+                            !(Math.abs(area.x - pos.x) < 5 &&
+                              Math.abs(area.y - pos.y) < 5)
+                        );
+                    }, 4200);
+                }
+            }
+
+            // 监听点击事件
+            document.addEventListener('click', handleTap);
+            document.addEventListener('touchstart', handleTap, { passive: true });
+
+            // 初始化音频
+            document.addEventListener('click', function initOnce() {
+                initAudio();
+                document.removeEventListener('click', initOnce);
+            }, { once: true });
+            document.addEventListener('touchstart', function initOnceTouch() {
+                initAudio();
+                document.removeEventListener('touchstart', initOnceTouch);
+            }, { once: true, passive: true });
+
+            // 欢迎提示消失
+            setTimeout(() => {
+                const welcome = document.getElementById('welcomeMsg');
+                if (welcome) welcome.style.display = 'none';
+            }, 2500);
+        })();
+    </script>
+</body>
+</html>
