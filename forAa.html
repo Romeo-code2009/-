@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>🌺 Anna姨妈 · 马年喜乐 & 神奇马宠 🌺</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at 30% 30%, #1a1035, #020617);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', '华文楷体', 'Microsoft YaHei', cursive, sans-serif;
+            padding: 10px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        /* 流动星云 */
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('data:image/svg+xml;utf8,<svg width="100%" height="100%" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="glow" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="%23ffb347" stop-opacity="0.1"/><stop offset="80%" stop-color="%234a2c9e" stop-opacity="0"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23glow)"/></svg>');
+            opacity: 0.6;
+            pointer-events: none;
+            animation: slowDrift 40s infinite alternate;
+        }
+        @keyframes slowDrift {
+            0% { transform: scale(1) rotate(0deg); opacity: 0.4; }
+            100% { transform: scale(1.2) rotate(3deg); opacity: 0.8; }
+        }
+
+        .card {
+            position: relative;
+            max-width: 500px;   /* 手机友好最大宽度 */
+            width: 100%;
+            background: rgba(18, 12, 30, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 200, 150, 0.5);
+            border-radius: 40px 40px 30px 30px;   /* 稍微调小适应小屏 */
+            padding: 30px 20px 40px 20px;
+            box-shadow: 0 40px 70px rgba(0,0,0,0.8), 0 0 0 2px #ffcf9a66, 0 0 60px #ffb56b;
+            z-index: 10;
+            overflow: hidden;
+        }
+        #fireworks-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 5;
+            color: #fef7e9;
+            text-shadow: 0 0 10px #ffae6a, 0 0 30px #c28eff, 2px 4px 8px black;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* ===== 有趣的马宠物组件 ===== */
+        .magic-horse {
+            position: relative;
+            margin: 0px 0 5px;
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 0.1s ease;
+            z-index: 30;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .magic-horse:active {
+            transform: scale(0.95);
+        }
+        .horse-pet {
+            font-size: 5.5rem;    /* 稍微缩小以防溢出，但仍醒目 */
+            line-height: 1;
+            filter: drop-shadow(0 0 25px #ffae42) drop-shadow(0 0 55px #ff8ad4);
+            animation: floatHorse 2.2s infinite alternate ease-in-out;
+            transform-origin: center;
+            transition: all 0.2s;
+        }
+        @keyframes floatHorse {
+            0% { transform: translateY(0px) rotate(-2deg); }
+            100% { transform: translateY(-8px) rotate(2deg); }
+        }
+        /* 马蹄子底下的小火花 */
+        .hoof-spark {
+            position: absolute;
+            bottom: 0px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 20px;
+            background: radial-gradient(ellipse at center, #ffe28c, transparent 80%);
+            filter: blur(8px);
+            opacity: 0.7;
+            border-radius: 50%;
+            z-index: -1;
+        }
+        /* 提示标签 */
+        .click-hint {
+            background: rgba(255,200,100,0.2);
+            backdrop-filter: blur(4px);
+            padding: 5px 14px;
+            border-radius: 40px;
+            font-size: 1rem;        /* 手机适中小字 */
+            color: #ffe3b5;
+            border: 1px solid #ffb46e;
+            margin-top: 2px;
+            letter-spacing: 1px;
+            box-shadow: 0 0 20px #ff9f4a;
+            white-space: nowrap;
+        }
+
+        /* 祝福语弹窗 - 新定位：下方居中，且物理弹出 */
+        .bubble-message {
+            position: absolute;
+            top: 100%;            /* 位于马组件正下方 */
+            left: 50%;
+            transform: translate(-50%, 10px) scale(0.8);  /* 初始隐藏且偏下 */
+            max-width: 300px;
+            width: max-content;
+            background: rgba(25, 18, 40, 0.95);
+            backdrop-filter: blur(16px);
+            border: 3px solid #ffe49e;
+            border-radius: 50px 20px 50px 20px;
+            padding: 16px 22px;
+            color: #fff1d2;
+            font-size: 1.3rem;      /* 手机阅读合适 */
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 50px #ffbf40, 0 0 0 2px #ffd9a3 inset;
+            z-index: 100;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.1s ease, transform 0.2s cubic-bezier(0.28, 1.5, 0.55, 1);
+            transform-origin: center bottom;  /* 从下方弹起 */
+            line-height: 1.4;
+            white-space: nowrap;
+        }
+        .bubble-message span {
+            display: inline-block;
+            background: linear-gradient(145deg, #ffdd88, #ffb27a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 1.8rem;
+        }
+        .bubble-message.show {
+            opacity: 1;
+            transform: translate(-50%, 10px) scale(1);  /* 弹到正常大小，位置不变(已在下方) */
+            animation: bouncePopMobile 0.5s cubic-bezier(0.28, 1.5, 0.55, 1) forwards;
+        }
+        @keyframes bouncePopMobile {
+            0% { transform: translate(-50%, 20px) scale(0.3); opacity: 0; }
+            40% { transform: translate(-50%, 0px) scale(1.1); opacity: 1; }
+            70% { transform: translate(-50%, 5px) scale(0.98); }
+            100% { transform: translate(-50%, 10px) scale(1); opacity: 1; }
+        }
+
+        .greeting-name {
+            font-size: 2.5rem;       /* 手机适当缩小 */
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #ffe2a3, #ffc6b3, #ffb3e6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px #ffae42, 0 0 70px #ff78b3;
+            margin-bottom: 8px;
+            border-bottom: 3px solid #ffcf9a;
+            padding-bottom: 8px;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .greeting-sub {
+            font-size: 1.5rem;
+            font-weight: 300;
+            background: rgba(255, 215, 150, 0.15);
+            padding: 8px 20px;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+            margin-bottom: 15px;
+            color: #ffecb3;
+            border: 1px solid #ffc491;
+            text-align: center;
+        }
+
+        .bless-box {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            border-left: 5px solid #ffad6b;
+            border-right: 5px solid #ffa5d2;
+            border-radius: 40px 15px 40px 15px;
+            padding: 22px 18px;
+            margin: 15px 0;
+            box-shadow: inset 0 0 40px #ffc76433, 0 20px 30px black;
+            font-size: 1.1rem;          /* 手机字体略小保证完整显示 */
+            line-height: 1.7rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .bless-box .highlight {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(145deg, #ffe074, #ffa55c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 0 20px #ff7b2b);
+        }
+
+        .firework-emoji-line {
+            font-size: 2rem;
+            letter-spacing: 6px;
+            filter: drop-shadow(0 0 10px #ffb870);
+            margin: 15px 0 8px;
+            word-break: keep-all;
+        }
+
+        .closing {
+            font-size: 1.7rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffda88, #ffb6c1, #c2adff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-top: 20px;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .signature {
+            font-size: 1.5rem;
+            margin-top: 12px;
+            font-style: italic;
+            border-top: 2px dashed #ffc891;
+            padding-top: 18px;
+            width: 100%;
+            text-align: center;
+            color: #ffe6b3;
+        }
+
+        .ground-spark {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: radial-gradient(circle at 20% 100%, #ffdb8a, transparent 50%),
+                        radial-gradient(circle at 80% 100%, #ffa5a5, transparent 50%),
+                        radial-gradient(circle at 50% 100%, #cf9eff, transparent 60%);
+            filter: blur(20px);
+            opacity: 0.7;
+            z-index: 1;
+            animation: groundGlow 3s infinite alternate;
+        }
+        @keyframes groundGlow {
+            0% { opacity: 0.5; filter: blur(25px); }
+            100% { opacity: 0.9; filter: blur(15px); }
+        }
+
+        /* 手动星星 */
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 20px gold;
+            z-index: 2;
+            pointer-events: none;
+        }
+        /* 底部小提示在手机上也小一点 */
+        .fixed-hint {
+            position: fixed;
+            bottom: 6px;
+            right: 10px;
+            color: #ffcf9a;
+            opacity:0.5;
+            font-size:0.7rem;
+            z-index:99;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="fireworks-canvas"></canvas>
+    <div id="stars-container"></div>
+
+    <div class="card">
+        <div class="ground-spark"></div>
+
+        <div class="content">
+            <!-- ===== 有趣的马宠物组件 (点击触发) 手机版下方气泡已调整 ===== -->
+            <div class="magic-horse" id="horsePet">
+                <div class="horse-pet" id="horseEmoji">🐴💖✨</div>
+                <div class="hoof-spark"></div>
+                <div class="click-hint">👆 摸摸马儿～ 有好运</div>
+                <!-- 弹窗祝福语气泡 (初始隐藏) 针对Anna姨妈定制 且位于下方 -->
+                <div id="blessBubble" class="bubble-message">
+                    <span>Anna姨妈</span> 🧡<br>
+                    马年生活 · 甜如蜜糖 🍬<br>
+                    没烦恼 · 常开心 · 好运奔腾而来 🐎
+                </div>
+            </div>
+
+            <div class="greeting-name">Anna 姨妈 · 马年喜乐</div>
+            <div class="greeting-sub">🌸 丙午新春 · 专属烟火 🌸</div>
+
+            <div class="bless-box">
+                <p>
+                    <span class="highlight">Anna姨妈</span>，最温柔最可爱的您<br>
+                    愿马蹄声声响，带走所有烦与忧<br>
+                    留下满心欢喜，自在又轻盈。<br>
+                </p>
+                <div class="firework-emoji-line">🎇🌸🎆🌺🎇</div>
+                <p>
+                    <strong>生活开开心心 · 身体健健康康</strong> —— 这是烟火许给您的诺言。<br>
+                    那些偶尔的疲惫、微小的琐碎，<br>
+                    都被春风吹散，化作<strong class="highlight">一路繁花、满地星光</strong>。<br>
+                </p>
+                <p>
+                    🌠 丙午新岁，愿您日日笑口常开，<br>
+                    牌运亨通，菜园丰收，广场舞步轻快。<br>
+                    工作顺心，事事顺利，总有贵人相助。<br>
+                </p>
+                <p style="font-size:1.5rem; margin:12px 0;">
+                    💥 好运相伴 · 马年大吉 💥
+                </p>
+                <p style="font-size:1rem; margin-top:8px; color: #ffdfb8;">
+                    🐎 马到成功，烦恼踏平；生活如糖，甜透心间~
+                </p>
+            </div>
+
+            <div class="closing">
+                Anna 姨妈 · 马年甜度满分 🐴💐
+            </div>
+            <div class="signature">
+                —— 永远爱您的侄子 然  💌
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed-hint">✨ 按按马 · 听马啸收祝福 ✨</div>
+
+    <script>
+        (function() {
+            // ------------------------------
+            // 1. 烟花特效 (兼容手机，略加强)
+            // ------------------------------
+            const canvas = document.getElementById('fireworks-canvas');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            let particles = [];
+
+            function resizeCanvas() {
+                const card = document.querySelector('.card');
+                const rect = card.getBoundingClientRect();
+                width = rect.width;
+                height = rect.height;
+                canvas.style.width = width + 'px';
+                canvas.style.height = height + 'px';
+                canvas.width = width;
+                canvas.height = height;
+            }
+
+            function randomColor() {
+                const hue = Math.random() * 360;
+                return `hsl(${hue}, ${70 + Math.random() * 30}%, ${70 + Math.random() * 25}%)`;
+            }
+
+            class Particle {
+                constructor(x, y, vx, vy, color, size, life) {
+                    this.x = x; this.y = y; this.vx = vx; this.vy = vy;
+                    this.color = color; this.size = size; this.life = life; this.maxLife = life;
+                }
+                update() {
+                    this.x += this.vx; this.y += this.vy; this.vy += 0.02;
+                    this.life -= 1; this.size *= 0.99;
+                }
+                draw() {
+                    if (this.life <= 0) return;
+                    ctx.globalAlpha = Math.min(1, (this.life / this.maxLife) * 1.2);
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.shadowColor = this.color;
+                    ctx.shadowBlur = 12;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                    ctx.globalAlpha = 1;
+                }
+            }
+
+            function createFirework(px = null, py = null) {
+                let x, y;
+                if (px && py) { x = px; y = py; }
+                else { x = 20 + Math.random() * (width - 40); y = 20 + Math.random() * (height * 0.7); }
+                const particleCount = 40 + Math.floor(Math.random() * 60); // 手机性能稍微保守
+                const baseColor = randomColor();
+                for (let i = 0; i < particleCount; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = 1.2 + Math.random() * 3.2;
+                    const vx = Math.cos(angle) * speed * (Math.random() + 0.5);
+                    const vy = Math.sin(angle) * speed * (Math.random() + 0.5) - 1;
+                    const size = 2 + Math.random() * 4;
+                    const life = 70 + Math.floor(Math.random() * 50);
+                    let color = (Math.random() > 0.4) ? baseColor : randomColor();
+                    particles.push(new Particle(x, y, vx, vy, color, size, life));
+                }
+            }
+
+            function addTrailSpark() {
+                for (let i=0; i<2; i++) {
+                    const x = 30 + Math.random() * (width - 60);
+                    const y = height - 10 - Math.random() * 40;
+                    const vx = (Math.random() - 0.5) * 0.4;
+                    const vy = -1.6 - Math.random() * 2.2;
+                    const color = `hsl(${20 + Math.random()*40}, 90%, 75%)`;
+                    const size = 2 + Math.random() * 4;
+                    const life = 30 + Math.floor(Math.random() * 30);
+                    particles.push(new Particle(x, y, vx, vy, color, size, life));
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    particles[i].update();
+                    if (particles[i].life <= 0 || particles[i].y > height + 20 || particles[i].x < -20 || particles[i].x > width+20) {
+                        particles.splice(i, 1);
+                    } else {
+                        particles[i].draw();
+                    }
+                }
+                if (Math.random() < 0.05 && particles.length < 400) createFirework();
+                if (Math.random() < 0.3) addTrailSpark();
+                requestAnimationFrame(animate);
+            }
+
+            // 星星背景
+            function initStars() {
+                const starsContainer = document.getElementById('stars-container');
+                starsContainer.style.position = 'absolute';
+                starsContainer.style.inset = '0';
+                starsContainer.style.pointerEvents = 'none';
+                starsContainer.style.zIndex = '1';
+                for (let i = 0; i < 50; i++) {  // 手机适量
+                    const star = document.createElement('div');
+                    star.className = 'star';
+                    const size = 1 + Math.random() * 2.5;
+                    star.style.width = size + 'px';
+                    star.style.height = size + 'px';
+                    star.style.left = Math.random() * 100 + '%';
+                    star.style.top = Math.random() * 100 + '%';
+                    star.style.background = `rgb(255, ${200 + Math.random()*55}, ${150 + Math.random()*105})`;
+                    star.style.boxShadow = `0 0 ${6+Math.random()*15}px gold`;
+                    star.style.animation = `twinkle ${2+Math.random()*5}s infinite alternate`;
+                    starsContainer.appendChild(star);
+                }
+            }
+            const styleSheet = document.createElement("style");
+            styleSheet.textContent = `@keyframes twinkle { 0% { opacity: 0.2; transform: scale(1); } 100% { opacity: 1; transform: scale(1.3); } }`;
+            document.head.appendChild(styleSheet);
+
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+            initStars();
+            setTimeout(() => {
+                for (let i=0; i<6; i++) {
+                    setTimeout(() => { if (width && height) createFirework(width * (0.2+0.6*Math.random()), height * (0.2+0.5*Math.random())); }, i * 100);
+                }
+            }, 200);
+            animate();
+
+            // ------------------------------
+            // 2. 有趣的马宠物：马啸+祝福语弹窗 (点击一次出现一次)
+            // ------------------------------
+            const horse = document.getElementById('horsePet');
+            const bubble = document.getElementById('blessBubble');
+            let audioCtx = null;
+
+            function playHorseNeigh() {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume().then(() => { synthesizeNeigh(); });
+                } else {
+                    synthesizeNeigh();
+                }
+            }
+
+            function synthesizeNeigh() {
+                if (!audioCtx) return;
+                const now = audioCtx.currentTime;
+
+                const osc1 = audioCtx.createOscillator();
+                osc1.type = 'sawtooth';
+                osc1.frequency.setValueAtTime(520, now);
+                osc1.frequency.exponentialRampToValueAtTime(780, now + 0.2);
+                osc1.frequency.exponentialRampToValueAtTime(430, now + 0.4);
+
+                const osc2 = audioCtx.createOscillator();
+                osc2.type = 'triangle';
+                osc2.frequency.setValueAtTime(300, now);
+                osc2.frequency.exponentialRampToValueAtTime(620, now + 0.18);
+                osc2.frequency.exponentialRampToValueAtTime(360, now + 0.38);
+
+                const gainNode = audioCtx.createGain();
+                gainNode.gain.setValueAtTime(0.01, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.3, now + 0.05);
+                gainNode.gain.exponentialRampToValueAtTime(0.1, now + 0.3);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 1000;
+                filter.Q.value = 2;
+
+                osc1.connect(filter);
+                osc2.connect(filter);
+                filter.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                osc1.start(now);
+                osc2.start(now);
+                osc1.stop(now + 0.8);
+                osc2.stop(now + 0.75);
+            }
+
+            // 点击马事件：每次点击都移除show再添加，保证动画每次触发
+            horse.addEventListener('click', (e) => {
+                e.stopPropagation();
+                playHorseNeigh();
+
+                // 移除当前show以便重播
+                bubble.classList.remove('show');
+                // 强制重绘
+                void bubble.offsetWidth;
+                bubble.classList.add('show');
+
+                // 马儿开心反应
+                const horseEmoji = document.getElementById('horseEmoji');
+                horseEmoji.style.transform = 'scale(1.2) rotate(5deg)';
+                setTimeout(() => {
+                    horseEmoji.style.transform = '';
+                }, 200);
+
+                // 额外小烟花在马周围 (手机适配坐标)
+                if (width && height) {
+                    const rect = horse.getBoundingClientRect();
+                    const cardRect = document.querySelector('.card').getBoundingClientRect();
+                    const x = rect.left + rect.width/2 - cardRect.left;
+                    const y = rect.top + rect.height/3 - cardRect.top;
+                    for (let i=0; i<3; i++) {
+                        setTimeout(() => {
+                            createFirework(x + (Math.random()-0.5)*40, y + (Math.random()-0.5)*30);
+                        }, i*30);
+                    }
+                }
+            });
+
+            horse.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+            }, { passive: false });
+
+            // 手机点击外部偶尔会误触？没关系，已经完美
+        })();
+    </script>
+</body>
+</html>
