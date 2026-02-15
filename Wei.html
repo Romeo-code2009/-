@@ -17,7 +17,7 @@
             align-items: center;
             justify-content: center;
             font-family: 'Segoe UI', '华文楷体', 'Microsoft YaHei', cursive, sans-serif;
-            padding: 12px;
+            padding: 12px;            
             position: relative;
             overflow-x: hidden;
         }
@@ -39,14 +39,14 @@
         /* 主卡片——完全适配手机窄屏 */
         .card {
             position: relative;
-            max-width: 480px;
+            max-width: 480px;          
             width: 100%;
             background: rgba(10, 8, 25, 0.65);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 2px solid rgba(255, 215, 120, 0.4);
-            border-radius: 48px 48px 32px 32px;
-            padding: 28px 18px 40px 18px;
+            border-radius: 48px 48px 32px 32px;   
+            padding: 28px 18px 40px 18px;         
             box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 0 2px #ffd97833, 0 0 50px #ffb56b;
             z-index: 10;
             overflow: hidden;
@@ -77,7 +77,7 @@
         /* ===== 有趣的马宠物组件 (点击触发) ===== */
         .magic-horse {
             position: relative;
-            margin: 0 0 8px;
+            margin: 0 0 8px;           
             cursor: pointer;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
@@ -92,7 +92,7 @@
             transform: scale(0.95);
         }
         .horse-pet {
-            font-size: 5.5rem;
+            font-size: 5.5rem;          
             line-height: 1;
             filter: drop-shadow(0 0 20px #ffae42) drop-shadow(0 0 45px #ff4da6);
             animation: floatHorse 2.2s infinite alternate ease-in-out;
@@ -123,7 +123,7 @@
             backdrop-filter: blur(4px);
             padding: 5px 14px;
             border-radius: 40px;
-            font-size: 1rem;
+            font-size: 1rem;            
             color: #ffdba5;
             border: 1px solid #ffb46e;
             margin-top: 2px;
@@ -147,7 +147,7 @@
             border-radius: 40px 16px 40px 16px;
             padding: 14px 16px;
             color: #ffefc0;
-            font-size: 1.2rem;
+            font-size: 1.2rem;           
             font-weight: bold;
             text-align: center;
             box-shadow: 0 15px 30px rgba(0,0,0,0.8), 0 0 40px #ffbf40, 0 0 0 2px #ffd27f inset;
@@ -156,7 +156,7 @@
             opacity: 0;                  /* 默认隐藏 */
             transform-origin: top right;
             line-height: 1.4;
-            white-space: normal;
+            white-space: normal;          
             word-break: keep-all;
             transition: none;             /* 移除过渡，直接用keyframes控制显示 */
         }
@@ -184,7 +184,7 @@
 
         /* 名字超大但安全 */
         .greeting-name {
-            font-size: 2.8rem;
+            font-size: 2.8rem;           
             font-weight: 700;
             letter-spacing: 4px;
             background: linear-gradient(135deg, #ffe898, #ffc1a1, #ffb5f0);
@@ -202,7 +202,7 @@
         }
 
         .greeting-sub {
-            font-size: 1.5rem;
+            font-size: 1.5rem;           
             font-weight: 300;
             background: rgba(255, 215, 150, 0.15);
             padding: 6px 18px;
@@ -222,17 +222,17 @@
             border-left: 6px solid #ffb259;
             border-right: 6px solid #ff9fcd;
             border-radius: 40px 16px 40px 16px;
-            padding: 20px 16px;
+            padding: 20px 16px;           
             margin: 12px 0 10px;
             box-shadow: inset 0 0 30px #ffc76433, 0 15px 25px black;
-            font-size: 1.1rem;
+            font-size: 1.1rem;            
             line-height: 1.7rem;
             text-align: center;
             width: 100%;
         }
 
         .bless-box .highlight {
-            font-size: 1.8rem;
+            font-size: 1.8rem;             
             font-weight: bold;
             background: linear-gradient(145deg, #ffd966, #ffb284);
             -webkit-background-clip: text;
@@ -243,7 +243,7 @@
         }
 
         .firework-emoji-line {
-            font-size: 2rem;
+            font-size: 2rem;                
             letter-spacing: 8px;
             filter: drop-shadow(0 0 8px cyan);
             margin: 16px 0 8px;
@@ -251,7 +251,7 @@
         }
 
         .closing {
-            font-size: 1.8rem;
+            font-size: 1.8rem;               
             font-weight: 700;
             background: linear-gradient(135deg, #ffd966, #ffb6c1, #b4a5ff);
             -webkit-background-clip: text;
@@ -280,7 +280,7 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 60px;
+            height: 60px;                
             background: radial-gradient(circle at 20% 100%, #ffec80, transparent 50%),
                         radial-gradient(circle at 80% 100%, #ff7676, transparent 50%),
                         radial-gradient(circle at 50% 100%, #c17eff, transparent 60%);
@@ -306,12 +306,12 @@
 
         /* 右下角小提示也缩小一点 */
         .fixed-hint {
-            position: fixed;
-            bottom: 6px;
-            right: 10px;
-            color: #ffcf9a;
-            opacity:0.5;
-            font-size:0.7rem;
+            position: fixed; 
+            bottom: 6px; 
+            right: 10px; 
+            color: #ffcf9a; 
+            opacity:0.5; 
+            font-size:0.7rem; 
             z-index:99;
             background: rgba(0,0,0,0.3);
             padding: 3px 8px;
@@ -445,7 +445,7 @@
             }
 
             function addTrailSpark() {
-                for (let i=0; i<2; i++) {
+                for (let i=0; i<2; i++) {  
                     const x = 30 + Math.random() * (width - 60);
                     const y = height - 10 - Math.random() * 30;
                     const vx = (Math.random() - 0.5) * 0.4;
@@ -479,7 +479,7 @@
                 starsContainer.style.inset = '0';
                 starsContainer.style.pointerEvents = 'none';
                 starsContainer.style.zIndex = '1';
-                for (let i = 0; i < 50; i++) {
+                for (let i = 0; i < 50; i++) {  
                     const star = document.createElement('div');
                     star.className = 'star';
                     const size = 1 + Math.random() * 2.5;
@@ -501,7 +501,7 @@
             resizeCanvas();
             initStars();
             setTimeout(() => {
-                for (let i=0; i<5; i++) {
+                for (let i=0; i<5; i++) {  
                     setTimeout(() => { if (width && height) createFirework(width * (0.2+0.6*Math.random()), height * (0.2+0.5*Math.random())); }, i * 120);
                 }
             }, 200);
@@ -517,7 +517,7 @@
             // 移除所有音频相关代码，只保留弹窗和缩放效果
             horse.addEventListener('click', (e) => {
                 e.stopPropagation();
-
+                
                 // 1. 马儿开心的缩放效果
                 horseEmoji.style.transform = 'scale(1.2) rotate(5deg)';
                 setTimeout(() => {
@@ -537,7 +537,7 @@
                     const cardRect = document.querySelector('.card').getBoundingClientRect();
                     const x = rect.left + rect.width/2 - cardRect.left;
                     const y = rect.top + rect.height/3 - cardRect.top;
-                    for (let i=0; i<2; i++) {
+                    for (let i=0; i<2; i++) {   
                         setTimeout(() => {
                             createFirework(x + (Math.random()-0.5)*40, y + (Math.random()-0.5)*30);
                         }, i*40);
@@ -547,7 +547,7 @@
 
             // 手机端防止双击缩放干扰（保留）
             horse.addEventListener('touchstart', (e) => {
-                e.preventDefault();
+                e.preventDefault(); 
             }, { passive: false });
 
         })();
