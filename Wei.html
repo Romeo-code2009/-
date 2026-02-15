@@ -17,7 +17,7 @@
             align-items: center;
             justify-content: center;
             font-family: 'Segoe UI', '华文楷体', 'Microsoft YaHei', cursive, sans-serif;
-            padding: 12px;            /* 手机周围留出呼吸空间 */
+            padding: 12px;
             position: relative;
             overflow-x: hidden;
         }
@@ -39,14 +39,14 @@
         /* 主卡片——完全适配手机窄屏 */
         .card {
             position: relative;
-            max-width: 480px;          /* 舒服的手机宽度 */
+            max-width: 480px;
             width: 100%;
             background: rgba(10, 8, 25, 0.65);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 2px solid rgba(255, 215, 120, 0.4);
-            border-radius: 48px 48px 32px 32px;   /* 稍微缩小适应小屏 */
-            padding: 28px 18px 40px 18px;         /* 上下左右内边距精细调校 */
+            border-radius: 48px 48px 32px 32px;
+            padding: 28px 18px 40px 18px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 0 2px #ffd97833, 0 0 50px #ffb56b;
             z-index: 10;
             overflow: hidden;
@@ -77,7 +77,7 @@
         /* ===== 有趣的马宠物组件 (点击触发) ===== */
         .magic-horse {
             position: relative;
-            margin: 0 0 8px;           /* 手机顶部间距减少 */
+            margin: 0 0 8px;
             cursor: pointer;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
@@ -92,7 +92,7 @@
             transform: scale(0.95);
         }
         .horse-pet {
-            font-size: 5.5rem;          /* 稍缩一点，防止爆框 */
+            font-size: 5.5rem;
             line-height: 1;
             filter: drop-shadow(0 0 20px #ffae42) drop-shadow(0 0 45px #ff4da6);
             animation: floatHorse 2.2s infinite alternate ease-in-out;
@@ -123,7 +123,7 @@
             backdrop-filter: blur(4px);
             padding: 5px 14px;
             border-radius: 40px;
-            font-size: 1rem;            /* 手机小字更友好 */
+            font-size: 1rem;
             color: #ffdba5;
             border: 1px solid #ffb46e;
             margin-top: 2px;
@@ -132,31 +132,33 @@
             white-space: nowrap;
         }
 
-        /* 祝福语弹窗 - 有趣物理效果 (手机尺寸适配) */
+        /* 祝福语弹窗 - 完美手机适配 + 每次点击都弹出 */
         .bubble-message {
             position: absolute;
-            top: 10px;
-            right: -10px;               /* 往内靠一点 */
-            max-width: 250px;            /* 手机最大宽度 */
+            /* 在手机上定位到马头右上方，避免跑出屏幕 */
+            top: -10px;
+            right: -5px;
+            max-width: 240px;            /* 手机最大宽度 */
             width: max-content;
-            background: rgba(20, 15, 35, 0.95);
+            min-width: 200px;             /* 保证内容不挤爆 */
+            background: rgba(20, 15, 35, 0.96);
             backdrop-filter: blur(16px);
             border: 3px solid #ffcf7a;
             border-radius: 40px 16px 40px 16px;
-            padding: 14px 20px;
+            padding: 14px 16px;
             color: #ffefc0;
-            font-size: 1.2rem;           /* 适中 */
+            font-size: 1.2rem;
             font-weight: bold;
             text-align: center;
             box-shadow: 0 15px 30px rgba(0,0,0,0.8), 0 0 40px #ffbf40, 0 0 0 2px #ffd27f inset;
             z-index: 100;
             pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.1s ease;
+            opacity: 0;                  /* 默认隐藏 */
             transform-origin: top right;
             line-height: 1.4;
-            white-space: normal;          /* 手机自动折行 */
+            white-space: normal;
             word-break: keep-all;
+            transition: none;             /* 移除过渡，直接用keyframes控制显示 */
         }
         .bubble-message span {
             display: inline-block;
@@ -166,20 +168,23 @@
             color: transparent;
             font-size: 1.7rem;
         }
+
+        /* 弹出动画 - 每次点击重新触发 */
         .bubble-message.show {
             opacity: 1;
-            animation: bouncePop 0.7s cubic-bezier(0.28, 1.5, 0.55, 1) forwards;
+            animation: popOnce 0.5s cubic-bezier(0.2, 1.3, 0.4, 1) forwards;
         }
-        @keyframes bouncePop {
-            0% { transform: scale(0.2) translate(20px, -30px); opacity: 0; }
-            40% { transform: scale(1.2) translate(-5px, 10px); opacity: 1; }
-            70% { transform: scale(0.95) translate(2px, -3px); }
+
+        @keyframes popOnce {
+            0% { transform: scale(0.2) translate(10px, -20px); opacity: 0; }
+            40% { transform: scale(1.2) translate(-3px, 6px); opacity: 1; }
+            70% { transform: scale(0.95) translate(1px, -2px); }
             100% { transform: scale(1) translate(0, 0); opacity: 1; }
         }
 
         /* 名字超大但安全 */
         .greeting-name {
-            font-size: 2.8rem;           /* 3.5rem在手机过大，下调 */
+            font-size: 2.8rem;
             font-weight: 700;
             letter-spacing: 4px;
             background: linear-gradient(135deg, #ffe898, #ffc1a1, #ffb5f0);
@@ -197,7 +202,7 @@
         }
 
         .greeting-sub {
-            font-size: 1.5rem;           /* 合适 */
+            font-size: 1.5rem;
             font-weight: 300;
             background: rgba(255, 215, 150, 0.15);
             padding: 6px 18px;
@@ -217,17 +222,17 @@
             border-left: 6px solid #ffb259;
             border-right: 6px solid #ff9fcd;
             border-radius: 40px 16px 40px 16px;
-            padding: 20px 16px;           /* 缩窄内边距 */
+            padding: 20px 16px;
             margin: 12px 0 10px;
             box-shadow: inset 0 0 30px #ffc76433, 0 15px 25px black;
-            font-size: 1.1rem;            /* 基础字体缩小 */
+            font-size: 1.1rem;
             line-height: 1.7rem;
             text-align: center;
             width: 100%;
         }
 
         .bless-box .highlight {
-            font-size: 1.8rem;             /* 相对缩小 */
+            font-size: 1.8rem;
             font-weight: bold;
             background: linear-gradient(145deg, #ffd966, #ffb284);
             -webkit-background-clip: text;
@@ -238,7 +243,7 @@
         }
 
         .firework-emoji-line {
-            font-size: 2rem;                /* 适当 */
+            font-size: 2rem;
             letter-spacing: 8px;
             filter: drop-shadow(0 0 8px cyan);
             margin: 16px 0 8px;
@@ -246,7 +251,7 @@
         }
 
         .closing {
-            font-size: 1.8rem;               /* 适配 */
+            font-size: 1.8rem;
             font-weight: 700;
             background: linear-gradient(135deg, #ffd966, #ffb6c1, #b4a5ff);
             -webkit-background-clip: text;
@@ -275,7 +280,7 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 60px;                /* 矮一点 不占空间 */
+            height: 60px;
             background: radial-gradient(circle at 20% 100%, #ffec80, transparent 50%),
                         radial-gradient(circle at 80% 100%, #ff7676, transparent 50%),
                         radial-gradient(circle at 50% 100%, #c17eff, transparent 60%);
@@ -327,8 +332,8 @@
             <div class="magic-horse" id="horsePet">
                 <div class="horse-pet" id="horseEmoji">🐴✨🔥</div>
                 <div class="hoof-spark"></div>
-                <div class="click-hint">👆 快按按我！有马啸～</div>
-                <!-- 弹窗祝福语气泡 (初始隐藏) -->
+                <div class="click-hint">👆 快按按我！祝福弹出来～</div>
+                <!-- 弹窗祝福语气泡 (初始隐藏) 每次点击弹出 -->
                 <div id="blessBubble" class="bubble-message">
                     <span>魏思粒</span> 🎇<br>
                     马到成功 · 难关踏平 💪<br>
@@ -370,7 +375,7 @@
         </div>
     </div>
 
-    <div class="fixed-hint">✨ 按马有惊喜 · 马啸+祝福 ✨</div>
+    <div class="fixed-hint">✨ 按马出祝福 ✨</div>
 
     <script>
         (function() {
@@ -425,7 +430,7 @@
                 let x, y;
                 if (px && py) { x = px; y = py; }
                 else { x = 20 + Math.random() * (width - 40); y = 20 + Math.random() * (height * 0.7); }
-                const particleCount = 50 + Math.floor(Math.random() * 60); // 稍减粒子数手机更流畅
+                const particleCount = 50 + Math.floor(Math.random() * 60);
                 const baseColor = randomColor();
                 for (let i = 0; i < particleCount; i++) {
                     const angle = Math.random() * Math.PI * 2;
@@ -440,7 +445,7 @@
             }
 
             function addTrailSpark() {
-                for (let i=0; i<2; i++) {  // 减少火花数量
+                for (let i=0; i<2; i++) {
                     const x = 30 + Math.random() * (width - 60);
                     const y = height - 10 - Math.random() * 30;
                     const vx = (Math.random() - 0.5) * 0.4;
@@ -474,7 +479,7 @@
                 starsContainer.style.inset = '0';
                 starsContainer.style.pointerEvents = 'none';
                 starsContainer.style.zIndex = '1';
-                for (let i = 0; i < 50; i++) {  // 少一点星星，手机够用
+                for (let i = 0; i < 50; i++) {
                     const star = document.createElement('div');
                     star.className = 'star';
                     const size = 1 + Math.random() * 2.5;
@@ -496,89 +501,43 @@
             resizeCanvas();
             initStars();
             setTimeout(() => {
-                for (let i=0; i<5; i++) {  // 开场烟花少一点
+                for (let i=0; i<5; i++) {
                     setTimeout(() => { if (width && height) createFirework(width * (0.2+0.6*Math.random()), height * (0.2+0.5*Math.random())); }, i * 120);
                 }
             }, 200);
             animate();
 
             // ------------------------------
-            // 2. 有趣的马宠物：马啸+祝福语弹窗
+            // 2. 马宠点击：每次点击弹出祝福语（无声音）
             // ------------------------------
             const horse = document.getElementById('horsePet');
             const bubble = document.getElementById('blessBubble');
-            let audioCtx = null;
+            const horseEmoji = document.getElementById('horseEmoji');
 
-            function playHorseNeigh() {
-                if (!audioCtx) {
-                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume().then(() => { synthesizeNeigh(); });
-                } else {
-                    synthesizeNeigh();
-                }
-            }
-
-            function synthesizeNeigh() {
-                if (!audioCtx) return;
-                const now = audioCtx.currentTime;
-
-                const osc1 = audioCtx.createOscillator();
-                osc1.type = 'sawtooth';
-                osc1.frequency.setValueAtTime(520, now);
-                osc1.frequency.exponentialRampToValueAtTime(780, now + 0.2);
-                osc1.frequency.exponentialRampToValueAtTime(430, now + 0.4);
-
-                const osc2 = audioCtx.createOscillator();
-                osc2.type = 'triangle';
-                osc2.frequency.setValueAtTime(300, now);
-                osc2.frequency.exponentialRampToValueAtTime(620, now + 0.18);
-                osc2.frequency.exponentialRampToValueAtTime(360, now + 0.38);
-
-                const gainNode = audioCtx.createGain();
-                gainNode.gain.setValueAtTime(0.01, now);
-                gainNode.gain.exponentialRampToValueAtTime(0.3, now + 0.05);
-                gainNode.gain.exponentialRampToValueAtTime(0.1, now + 0.3);
-                gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
-
-                const filter = audioCtx.createBiquadFilter();
-                filter.type = 'bandpass';
-                filter.frequency.value = 1000;
-                filter.Q.value = 2;
-
-                osc1.connect(filter);
-                osc2.connect(filter);
-                filter.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
-
-                osc1.start(now);
-                osc2.start(now);
-                osc1.stop(now + 0.8);
-                osc2.stop(now + 0.75);
-            }
-
-            // 点击马事件
+            // 移除所有音频相关代码，只保留弹窗和缩放效果
             horse.addEventListener('click', (e) => {
                 e.stopPropagation();
-                playHorseNeigh();
 
-                bubble.classList.remove('show');
-                void bubble.offsetWidth;
-                bubble.classList.add('show');
-
-                const horseEmoji = document.getElementById('horseEmoji');
+                // 1. 马儿开心的缩放效果
                 horseEmoji.style.transform = 'scale(1.2) rotate(5deg)';
                 setTimeout(() => {
                     horseEmoji.style.transform = '';
                 }, 200);
 
+                // 2. 关键：每次点击都重新触发弹窗动画
+                // 移除 show 类，强制重绘，再添加 show 类，确保动画每次都重新播放
+                bubble.classList.remove('show');
+                // 强制浏览器重绘（小技巧）
+                void bubble.offsetWidth;
+                bubble.classList.add('show');
+
+                // 3. 同时放几朵小烟花增加气氛 (可选，不影响弹窗)
                 if (width && height) {
                     const rect = horse.getBoundingClientRect();
                     const cardRect = document.querySelector('.card').getBoundingClientRect();
                     const x = rect.left + rect.width/2 - cardRect.left;
                     const y = rect.top + rect.height/3 - cardRect.top;
-                    for (let i=0; i<2; i++) {   // 少放两个烟花保证流畅
+                    for (let i=0; i<2; i++) {
                         setTimeout(() => {
                             createFirework(x + (Math.random()-0.5)*40, y + (Math.random()-0.5)*30);
                         }, i*40);
@@ -586,6 +545,7 @@
                 }
             });
 
+            // 手机端防止双击缩放干扰（保留）
             horse.addEventListener('touchstart', (e) => {
                 e.preventDefault();
             }, { passive: false });
