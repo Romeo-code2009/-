@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>套餐详情 - 佤邦商家平台开发</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    background: #f0f2f5;
+    color: #1c1e21;
+    padding: 20px 15px;
+    line-height: 1.6;
+  }
+  .page-title {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #1677ff;
+    font-weight: 600;
+  }
+  /* 卡片放大 */
+  .package {
+    max-width: 550px;
+    margin: 0 auto 25px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+  }
+  .package:hover {
+    transform: translateY(-5px);
+  }
+  .package-header {
+    background: #1677ff;
+    color: #fff;
+    padding: 15px 20px;
+    font-size: 18px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  /* 图片高度加大，展示更大 */
+  .package-img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    border-bottom: 1px solid #eee;
+  }
+  .package-desc {
+    padding: 20px;
+    font-size: 14px;
+    color: #333;
+  }
+  .package-desc p {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+  }
+  .package-desc p::before {
+    content: "✓";
+    color: #52c41a;
+    margin-right: 8px;
+    font-weight: bold;
+  }
+  .bottom-tip {
+    max-width: 480px;
+    margin: 10px auto 0;
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-title">套餐详情预览</div>
+
+<!-- 1 -->
+<div class="package">
+  <div class="package-header">
+    静态网页展示
+    <span>299–499 元</span>
+  </div>
+  <img src="https://aka.doubaocdn.com/s/bPyA1yHLzc" alt="静态网页展示效果图" class="package-img">
+  <div class="package-desc">
+    <p>单页面展示</p>
+    <p>手机自适应</p>
+    <p>基础图文排版</p>
+    <p>适合：个人 / 小店 / 临时宣传</p>
+  </div>
+</div>
+
+<!-- 2 -->
+<div class="package">
+  <div class="package-header">
+    基础展示网站
+    <span>499–1299 元</span>
+  </div>
+  <img src="https://aka.doubaocdn.com/s/f1Xc1yHLzc" alt="基础展示网站效果图" class="package-img">
+  <div class="package-desc">
+    <p>产品介绍展示</p>
+    <p>多页面跳转</p>
+    <p>联系方式展示</p>
+    <p>适合：个体户 / 小型工作室</p>
+  </div>
+</div>
+
+<!-- 3 -->
+<div class="package">
+  <div class="package-header">
+    企业展示网站
+    <span>1299–3299 元</span>
+  </div>
+  <img src="https://aka.doubaocdn.com/s/0yzX1yHLzc" alt="企业展示网站效果图" class="package-img">
+  <div class="package-desc">
+    <p>多栏目展示</p>
+    <p>图片轮播</p>
+    <p>在线留言 + 预约表单</p>
+    <p>适合：实体店 / 中小企业</p>
+  </div>
+</div>
+
+<!-- 4 -->
+<div class="package">
+  <div class="package-header">
+    基础小程序
+    <span>999–2799 元</span>
+  </div>
+  <img src="https://aka.doubaocdn.com/s/OkyE1yHLzc" alt="基础小程序效果图" class="package-img">
+  <div class="package-desc">
+    <p>商品展示</p>
+    <p>在线咨询</p>
+    <p>地址导航 + 预约</p>
+    <p>适合：本地服务 / 门店</p>
+  </div>
+</div>
+
+<!-- 5 -->
+<div class="package">
+  <div class="package-header">
+    商城小程序
+    <span>2799–7799 元</span>
+  </div>
+  <img src="https://aka.doubaocdn.com/s/UoKA1yHLzc" alt="商城小程序效果图" class="package-img">
+  <div class="package-desc">
+    <p>商品上下架</p>
+    <p>下单支付</p>
+    <p>订单管理 + 会员系统</p>
+    <p>适合：电商 / 零售商户</p>
+  </div>
+</div>
+
+<!-- 6 -->
+<div class="package">
+  <div class="package-header">
+    简单APP
+    <span>4799–11799 元</span>
+  </div>
+  <img src="https://aka.doubaocdn.com/s/OgJS1yHLzc" alt="简单APP效果图" class="package-img">
+  <div class="package-desc">
+    <p>信息展示</p>
+    <p>用户登录</p>
+    <p>数据管理 + 简单交互</p>
+    <p>适合：小型平台 / 私域</p>
+  </div>
+</div>
+
+<!-- 7 -->
+<div class="package">
+  <div class="package-header">
+    功能型APP
+    <span>11799 元起</span>
+  </div>
+  <img src="https://aka.doubaocdn.com/s/ZzmE1yHLzc" alt="功能型APP效果图" class="package-img">
+  <div class="package-desc">
+    <p>完整商业功能</p>
+    <p>支付 + 积分系统</p>
+    <p>后台管理 + 多端适配</p>
+    <p>适合：中大型企业 / 连锁品牌</p>
+  </div>
+</div>
+
+<div class="bottom-tip">
+  为佤邦人民服务。<br>
+  所有价格均为实价，性价比高，不搞虚价套路。<br>
+  真心想做、考虑清楚再咨询，不接受中途反悔、无理扯皮。<br>
+  诚信接单，用心做好每一个项目，非诚勿扰。
+</div>
+
+</body>
+</html>
