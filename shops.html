@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>泰国优选商品馆</title>
+    <style>
+        /* 全局样式重置与基础设置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #F5F5F5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 顶部导航栏 */
+        .navbar {
+            background-color: #1E88E5;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar h1 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .search-box {
+            flex-grow: 1;
+            margin: 0 15px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            background-color: rgba(255,255,255,0.9);
+        }
+
+        /* 分类专栏标签 */
+        .categories {
+            display: flex;
+            overflow-x: auto;
+            background-color: white;
+            padding: 10px 15px;
+            gap: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .categories::-webkit-scrollbar { display: none; } /* 隐藏滚动条 */
+
+        .category-tab {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background-color: #E3F2FD;
+            color: #1E88E5;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .category-tab.active {
+            background-color: #1E88E5;
+            color: white;
+        }
+
+        /* 商品展示区 */
+        .products-container {
+            padding: 15px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .product-hover {
+            transform: translateY(-5px);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 10px;
+        }
+
+        .product-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-price {
+            font-size: 16px;
+            font-weight: bold;
+            color: #E53935;
+            margin-bottom: 10px;
+        }
+
+        .buy-btn {
+            width: 100%;
+            padding: 8px;
+            background-color: #1E88E5;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .buy-btn:hover {
+            background-color: #1976D2;
+        }
+
+        .tag-thailand {
+            position: absolute;
+            background-color: #FFC107;
+            color: #333;
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin: 8px;
+        }
+
+        /* 底部广告轮播区 */
+        .ad-carousel {
+            margin: 20px 15px 30px;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .carousel-slides {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 180px;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .carousel-btn.prev { left: 15px; }
+        .carousel-btn.next { right: 15px; }
+
+        /* 空状态提示 */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <div class="navbar">
+        <h1>泰国优选</h1>
+        <div class="search-box">
+            <input type="text" placeholder="搜索泰国好物...">
+        </div>
+    </div>
+
+    <!-- 分类专栏 -->
+    <div class="categories">
+        <div class="category-tab active" data-category="snacks">泰国零食</div>
+        <div class="category-tab" data-category="cosmetics">泰妆护肤</div>
+        <div class="category-tab" data-category="home">家居好物</div>
+    </div>
+
+    <!-- 商品展示区 -->
+    <div class="products-container">
+        <div id="products-grid" class="product-grid">
+            <!-- 商品将通过JavaScript动态生成 -->
+        </div>
+    </div>
+
+    <!-- 底部广告轮播 -->
+    <div class="ad-carousel">
+        <button class="carousel-btn prev" onclick="prevSlide()">&lt;</button>
+        <button class="carousel-btn next" onclick="nextSlide()">&gt;</button>
+        <div id="carousel-slides" class="carousel-slides">
+            <div class="carousel-slide">
+                <img src="https://picsum.photos/800/400?random=1" alt="泰国广告1">
+            </div>
+            <div class="carousel-slide">
+                <img src="https://picsum.photos/800/400?random=2" alt="泰国广告2">
+            </div>
+            <div class="carousel-slide">
+                <img src="https://picsum.photos/800/400?random=3" alt="泰国广告3">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 商品数据
+        const productsData = {
+            snacks: [
+                { id: 1, name: "泰国进口榴莲干 100g", price: "¥39.9", img: "https://picsum.photos/300/300?random=10" },
+                { id: 2, name: "MARTINI 泰国奶茶 500ml", price: "¥12.9", img: "https://picsum.photos/300/300?random=11" },
+                { id: 3, name: "泰国芒果干 200g", price: "¥29.9", img: "https://picsum.photos/300/300?random=12" },
+                { id: 4, name: "泰国椰汁 1L", price: "¥19.9", img: "https://picsum.photos/300/300?random=13" }
+            ],
+            cosmetics: [
+                { id: 5, name: "泰国 Mistine 防晒乳", price: "¥79.9", img: "https://pics0me.msgfile.com/obj/legacy-tg/708899112937532929/1200x1200.jpeg" },
+                { id: 6, name: "泰国蛇毒面膜 10片", price: "¥59.9", img: "https://picsum.photos/300/300?random=15" },
+                { id: 7, name: "泰国护手霜礼盒", price: "¥49.9", img: "https://picsum.photos/300/300?random=16" },
+                { id: 8, name: "泰国身体乳 200ml", price: "¥39.9", img: "https://picsum.photos/300/300?random=17" }
+            ],
+            home: [
+                { id: 9, name: "泰国乳胶枕头", price: "¥129.9", img: "https://picsum.photos/300/300?random=18" },
+                { id: 10, name: "泰国香薰蜡烛", price: "¥29.9", img: "https://picsum.photos/300/300?random=19" },
+                { id: 11, name: "泰国天然燕窝礼盒", price: "¥299.9", img: "https://picsum.photos/300/300?random=20" },
+                { id: 12, name: "泰国手工藤编收纳筐", price: "¥59.9", img: "https://picsum.photos/300/300?random=21" }
+            ]
+        };
+
+        // 当前选中的分类
+        let currentCategory = "snacks";
+        // 轮播图当前索引
+        let currentSlide = 0;
+        // 轮播图总数量
+        const slideCount = document.querySelectorAll(".carousel-slide").length;
+
+        // 初始化页面
+        document.addEventListener("DOMContentLoaded", function() {
+            renderProducts(currentCategory);
+            initCategoryTabs();
+            startAutoSlide();
+        });
+
+        // 渲染商品
+        function renderProducts(category) {
+            const grid = document.getElementById("products-grid");
+            const products = productsData[category];
+            
+            if (!products || products.length === 0) {
+                grid.innerHTML = '<div class="empty-state">该分类下暂无商品</div>';
+                return;
+            }
+
+            grid.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <div class="tag-thailand">泰国直供</div>
+                    <img src="${product.img}" alt="${product.name}" class="product-img">
+                    <div class="product-info">
+                        <div class="product-title">${product.name}</div>
+                        <div class="product-price">${product.price}</div>
+                        <button class="buy-btn">立即购买</button>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        // 初始化分类标签
+        function initCategoryTabs() {
+            const tabs = document.querySelectorAll(".category-tab");
+            tabs.forEach(tab => {
+                tab.addEventListener("click", function() {
+                    // 移除所有active类
+                    tabs.forEach(t => t.classList.remove("active"));
+                    // 给当前点击的标签添加active类
+                    this.classList.add("active");
+                    // 更新当前分类并重新渲染商品
+                    currentCategory = this.dataset.category;
+                    renderProducts(currentCategory);
+                });
+            });
+        }
+
+        // 轮播图控制
+        function goToSlide(index) {
+            const slides = document.getElementById("carousel-slides");
+            // 处理边界情况
+            if (index < 0) currentSlide = slideCount - 1;
+            else if (index >= slideCount) currentSlide = 0;
+            else currentSlide = index;
+            // 移动轮播图
+            slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        function prevSlide() {
+            goToSlide(currentSlide - 1);
+        }
+
+        function nextSlide() {
+            goToSlide(currentSlide + 1);
+        }
+
+        // 自动轮播
+        function startAutoSlide() {
+            setInterval(() => {
+                nextSlide();
+            }, 3000); // 每3秒切换一次
+        }
+    </script>
+</body>
+</html>
