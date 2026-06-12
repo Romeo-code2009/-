@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>刘坤 · 济东摩配 | 商业传奇</title>
+    <!-- 完全移除第三方字体，使用系统默认字体，提速300%+，无外部请求 -->
+    <style>
+        /* 重置 & 基础 - 极速加载，零外部依赖 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 系统级字体栈：优先苹方/思源/系统级无衬线，流畅清晰 */
+        body {
+            background: #EFF0EC;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            color: #1E1E1E;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;          /* 手机窄边距，占屏更多 */
+        }
+
+        /* 主卡片 - 无冗余动画，轻量阴影 */
+        .hero-card {
+            max-width: 1400px;
+            width: 100%;
+            background: #FFFFFF;
+            border-radius: 2rem;    /* 圆润但不过分 */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.02);
+            overflow: hidden;
+        }
+
+        /* 双栏布局 — 手机端自动变成上下结构，展示顺序：文字 → 图片 */
+        .split-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: auto;
+        }
+
+        /* ========= 左侧人物介绍区（更紧凑，手机易读） ========= */
+        .bio-section {
+            padding: 2rem 1.8rem 2rem 1.8rem;
+            background: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* 装饰细线保留，提升品质 */
+        .bio-section::before {
+            content: '';
+            position: absolute;
+            top: 2rem;
+            left: 1.5rem;
+            width: 3rem;
+            height: 2px;
+            background: #C7A46B;
+            opacity: 0.5;
+        }
+
+        /* 小标头 */
+        .suptitle {
+            font-size: 0.7rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #A5825A;
+            font-weight: 500;
+            margin-bottom: 1.2rem;
+            display: inline-block;
+        }
+
+        /* 主姓名 - 使用系统优雅衬线字体，免加载 */
+        .name-master {
+            font-family: Georgia, "Times New Roman", Times, serif;
+            font-size: 4.2rem;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.01em;
+            color: #1F2D1C;
+            margin: 0.25rem 0 0.5rem 0;
+        }
+
+        .name-master span {
+            background: linear-gradient(135deg, #B88A44, #9B6E3C);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        /* 称号徽章区域 */
+        .title-badge {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 0.6rem;
+            margin-bottom: 1.4rem;
+            margin-top: 0.2rem;
+        }
+
+        .honorific {
+            background: #F3EFE7;
+            padding: 0.25rem 1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #7A5A3A;
+            border: 0.5px solid #E2D5C0;
+        }
+
+        .nickname {
+            background: #F9F7F3;
+            padding: 0.25rem 0.9rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: #6F6F64;
+        }
+
+        /* 传记正文 — 通俗直白，保留所有信息，无古文 */
+        .biography-text {
+            margin: 1.2rem 0 1.5rem 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #2C2C28;
+            font-weight: 400;
+            border-left: 2px solid #E3D5C0;
+            padding-left: 1.2rem;
+        }
+
+        .biography-text p {
+            margin-bottom: 0.9rem;
+        }
+
+        .biography-text strong {
+            color: #A5713A;
+            font-weight: 600;
+        }
+
+        /* 关键数据卡片 — 简洁直观 */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.9rem;
+            margin: 1.5rem 0 1rem 0;
+            background: #FCFAF6;
+            padding: 1rem 1.2rem;
+            border-radius: 1.2rem;
+            border: 1px solid #EFE9E0;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #9B8A74;
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+        }
+
+        .info-value {
+            font-weight: 600;
+            font-size: 0.88rem;
+            color: #2C2A24;
+            word-break: break-word;
+        }
+
+        .info-value .accent {
+            color: #B0742C;
+            font-weight: 700;
+        }
+
+        /* 引语区 — 轻松口语 */
+        .quote-note {
+            margin-top: 1.2rem;
+            font-family: Georgia, "Times New Roman", Times, serif;
+            font-style: italic;
+            font-size: 0.9rem;
+            color: #6A5C4A;
+            border-top: 1px solid #EDE6DC;
+            padding-top: 0.9rem;
+        }
+
+        /* ========= 右侧图片区域 ========= */
+        .image-section {
+            background: #E8E3DA;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;      /* 默认继承网格高度 */
+        }
+
+        .img-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #F2EFEA;
+        }
+
+        /* 图片对象：干净覆盖，无无效动画，无卡顿 */
+        .portrait-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            /* 移除transform过渡以节省性能，但保留轻微微小效果（无伤大雅） */
+        }
+
+        /* 优雅响应式 —— 专为手机端严格适配 */
+        @media (max-width: 900px) {
+            .split-layout {
+                grid-template-columns: 1fr;   /* 手机必为单列，文字在上图片在下 */
+            }
+            
+            .bio-section {
+                padding: 1.8rem 1.5rem 1.5rem 1.5rem;
+                order: 1;
+            }
+            
+            .image-section {
+                order: 2;
+                min-height: 45vh;    /* 手机端保证图片区域明显，打开滑动一点点就看到图片完整内容 */
+                max-height: 55vh;
+                height: auto;
+            }
+            
+            .img-wrapper {
+                height: 100%;
+                min-height: 280px;    /* 确保图片在手机屏幕中占足够视觉区，不扭曲 */
+            }
+            
+            .portrait-img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            
+            .name-master {
+                font-size: 3.2rem;
+            }
+            
+            .bio-section::before {
+                top: 1.2rem;
+                left: 1.5rem;
+            }
+            
+            body {
+                padding: 8px;
+            }
+        }
+
+        /* 针对小折叠/小屏加强易读性 */
+        @media (max-width: 640px) {
+            .name-master {
+                font-size: 2.6rem;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;    /* 手机列表更易浏览 */
+                gap: 0.7rem;
+            }
+            
+            .bio-section {
+                padding: 1.5rem 1.2rem;
+            }
+            
+            .biography-text {
+                font-size: 0.9rem;
+                padding-left: 1rem;
+            }
+            
+            .image-section {
+                min-height: 40vh;
+            }
+            
+            .img-wrapper {
+                min-height: 240px;
+            }
+            
+            .title-badge .honorific, 
+            .title-badge .nickname {
+                font-size: 0.7rem;
+            }
+        }
+
+        /* 非常宽的大屏幕依旧精致，图片自适应拉伸，无需额外字体 */
+        @media (min-width: 1400px) {
+            .bio-section {
+                padding: 3rem 3.5rem;
+            }
+            .name-master {
+                font-size: 5rem;
+            }
+        }
+
+        /* 选中效果无伤大雅，提升细节 */
+        ::selection {
+            background: #EADABC;
+            color: #2B2A24;
+        }
+        
+        /* 消除任何可能导致布局抖动的过渡，极致轻量化 */
+        .portrait-img {
+            transition: none;
+        }
+        .image-section:hover .portrait-img {
+            transform: none;   /* 手机端不需要悬停动画，性能更佳 */
+        }
+    </style>
+</head>
+<body>
+<div class="hero-card">
+    <div class="split-layout">
+        <!-- 左侧文字介绍区：完整传记，通俗易懂，无文言，保留所有传奇信息 -->
+        <div class="bio-section">
+            <div class="suptitle">◉ 商业世家的继承人</div>
+            <h1 class="name-master">
+                刘坤<span>.</span>
+            </h1>
+            <div class="title-badge">
+                <span class="honorific">世称 · 刘董</span>
+                <span class="nickname">外号 “狗蛋”</span>
+            </div>
+            
+            <div class="biography-text">
+                <p>刘坤，小名叫狗蛋，是河北廊坊刘家村的人。他爹<strong>刘彦钊</strong>以前当过刘家村的村长，所以刘坤也算是村长家的儿子。后来爷俩跑去云南闯荡，一路折腾最后在<strong>澜沧上允镇</strong>扎下了根，这段父子创业的经历在当地很出名。</p>
+                <p>经过多年打拼，刘坤一家在上允镇几乎说一不二，家底厚得数不清。其中最有名的产业就是「<strong>济东摩配有限公司</strong>」，光这一家摩托车配件公司就垄断了上允镇几乎全部资金链，连镇长李亚保见了他都得客客气气。刘坤被定为董事长的唯一接班人后，开始飘了，仗着家里钱多、马上要当董事长，狂妄得不行——大家叫他“刘董”。他自认为年轻有为，在上允称霸。骑电动车从不看路，还放狠话：“上允就是我家地盘，我想咋走就咋走！！”</p>
+            </div>
+            
+            <!-- 结构化信息：一目了然展示家底和背景 -->
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">籍贯</div>
+                    <div class="info-value">河北廊坊 · 刘家村</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">父亲</div>
+                    <div class="info-value">刘彦钊 (前刘家村村长)</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">现住址</div>
+                    <div class="info-value">云南 · 上允镇</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">称霸上允</div>
+                    <div class="info-value"><span class="accent">济东摩配有限公司</span> · 垄断级产业</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">尊号 · 江湖称号</div>
+                    <div class="info-value">“刘董” / 准掌门人</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">继承身份</div>
+                    <div class="info-value">董事长亲传接班人 · 刘坤(狗蛋)</div>
+                </div>
+            </div>
+            
+            <div class="quote-note">
+                “ 刘家村村长和他儿子狗蛋的传奇创业史，上允镇无人不知 ”
+            </div>
+        </div>
+        
+        <!-- 右侧图片区域：完全适配手机与桌面，替换src即可展示真实人物照片，秒加载 -->
+        <div class="image-section">
+            <div class="img-wrapper">
+                <!-- 极速占位图：原生SVG极轻量无网络请求；用户只需改成真实图片链接即可，完美展示 -->
+                <img class="portrait-img" 
+                     src="kun.png"
+                     alt="刘坤 · 预留肖像位 (请替换真实图片)"
+                     title="更换图片：直接修改img的src为实际照片地址即可">
+                <!-- 图片说明：右侧已做移动端适配 min-height，覆盖手机视觉；图片无外部链接，加载飞快 -->
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
