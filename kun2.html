@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>河北最帅男人 · 颜值排行榜</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:#fff;
+  padding:15px;
+  font-family:"Microsoft YaHei","PingFang SC",sans-serif;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+}
+.wanted{
+  max-width:600px;
+  margin:0 auto;
+  background:linear-gradient(145deg, #2a1f2a, #0d0d1a);
+  border:6px solid #c9a84c;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,0.8), inset 0 0 30px rgba(201,168,76,0.05);
+}
+.head{
+  background:linear-gradient(135deg, #b8860b, #d4af37);
+  color:#1a1a2e;
+  text-align:center;
+  padding:18px 10px;
+  font-size:28px;
+  font-weight:900;
+  letter-spacing:6px;
+  text-shadow:0 2px 8px rgba(255,215,0,0.3);
+}
+.level{
+  background:#0d0d1a;
+  color:#d4af37;
+  text-align:center;
+  padding:10px;
+  font-size:16px;
+  font-weight:bold;
+  letter-spacing:4px;
+  border-bottom:1px solid rgba(212,175,55,0.2);
+}
+/* 照片区域：三列布局，中间大，左右小 */
+.photo-box{
+  width:100%;
+  padding:25px 15px 10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+.photo-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  flex:1;
+}
+.photo-item.center{
+  flex:1.6;
+  transform:translateY(-6px);
+}
+.photo-item img{
+  border-radius:50%;
+  border:3px solid rgba(212,175,55,0.4);
+  background:#333;
+  width:100%;
+  max-width:160px;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  box-shadow:0 8px 30px rgba(0,0,0,0.6);
+}
+.photo-item.center img{
+  max-width:200px;
+  border-color:#d4af37;
+  border-width:4px;
+  box-shadow:0 0 40px rgba(212,175,55,0.25), 0 8px 30px rgba(0,0,0,0.6);
+}
+.photo-item .rank-label{
+  margin-top:8px;
+  font-size:14px;
+  font-weight:bold;
+  color:#aaa;
+  letter-spacing:1px;
+}
+.photo-item.center .rank-label{
+  font-size:20px;
+  color:#d4af37;
+  background:rgba(212,175,55,0.12);
+  padding:4px 16px;
+  border-radius:30px;
+  border:1px solid rgba(212,175,55,0.25);
+}
+.photo-item .rank-badge{
+  font-size:22px;
+  margin-bottom:2px;
+}
+.photo-item.center .rank-badge{
+  font-size:34px;
+}
+.info{
+  padding:10px 25px 30px;
+}
+.name{
+  font-size:30px;
+  font-weight:bold;
+  color:#d4af37;
+  text-align:center;
+  margin-bottom:12px;
+  letter-spacing:2px;
+}
+.item{
+  margin:12px 0;
+  font-size:16px;
+  line-height:1.6;
+  color:#ddd;
+}
+.label{
+  font-weight:bold;
+  color:#b8860b;
+}
+.reward{
+  background:linear-gradient(135deg, #b8860b, #d4af37);
+  color:#1a1a2e;
+  text-align:center;
+  padding:12px;
+  border-radius:40px;
+  font-size:20px;
+  font-weight:bold;
+  margin:18px 0;
+  letter-spacing:2px;
+}
+.desc{
+  color:#ccc;
+  line-height:1.8;
+  text-align:justify;
+  font-size:16px;
+  background:rgba(255,255,255,0.03);
+  padding:16px 18px;
+  border-radius:12px;
+  border-left:3px solid #d4af37;
+}
+.desc strong{
+  color:#d4af37;
+}
+/* 手机窄屏适配 */
+@media (max-width:480px){
+  .head{font-size:22px;letter-spacing:4px;padding:14px;}
+  .photo-box{gap:4px;padding:20px 8px 6px;}
+  .photo-item.center{flex:1.8;}
+  .photo-item img{max-width:100px;}
+  .photo-item.center img{max-width:130px;}
+  .photo-item .rank-label{font-size:12px;}
+  .photo-item.center .rank-label{font-size:16px;}
+  .photo-item .rank-badge{font-size:18px;}
+  .photo-item.center .rank-badge{font-size:26px;}
+  .info{padding:8px 16px 20px;}
+  .name{font-size:24px;}
+  .item{font-size:14px;}
+  .reward{font-size:17px;padding:10px;}
+  .desc{font-size:14px;padding:12px;}
+}
+@media (max-width:380px){
+  .photo-item img{max-width:70px;}
+  .photo-item.center img{max-width:100px;}
+  .photo-item.center .rank-label{font-size:14px;}
+}
+</style>
+</head>
+<body>
+<div class="wanted">
+  <div class="head">🏆 河北最帅男人 🏆</div>
+  <div class="level">★ 年度颜值排行榜 ★</div>
+
+  <!-- 三列照片：左亚、中冠、右季 -->
+  <div class="photo-box">
+    <!-- 亚军（左） -->
+    <div class="photo-item">
+      <span class="rank-badge">🥈</span>
+      <img src="kun2.jpg" alt="亚军" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23333%22/%3E%3Ctext x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2240%22%3E🥈%3C/text%3E%3C/svg%3E'">
+      <div class="rank-label">第二名</div>
+    </div>
+    <!-- 冠军（中） -->
+    <div class="photo-item center">
+      <span class="rank-badge">👑</span>
+      <img src="kunkunkun.png" alt="冠军" loading="lazy" onerror="this.src='kunkunkun.png width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23333%22/%3E%3Ctext x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23d4af37%22 font-size=%2240%22%3E👑%3C/text%3E%3C/svg%3E'">
+      <div class="rank-label">🥇 第一名</div>
+    </div>
+    <!-- 季军（右） -->
+    <div class="photo-item">
+      <span class="rank-badge">🥉</span>
+      <img src="kun3.jpg" alt="季军" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23333%22/%3E%3Ctext x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23cd7f32%22 font-size=%2240%22%3E🥉%3C/text%3E%3C/svg%3E'">
+      <div class="rank-label">第三名</div>
+    </div>
+  </div>
+
+  <div class="info">
+    <div class="name">✨ 冠军 · 河北刘坤 ✨</div>
+    <div class="item"><span class="label">称号：</span>河北最帅男人</div>
+    <div class="item"><span class="label">票数：</span>1,024,576 票</div>
+    <div class="item"><span class="label">碾压：</span>彭于晏 & 吴彦祖</div>
+
+    <div class="reward">👑 冠军奖金：¥ 100,000 👑</div>
+
+    <div class="desc">
+        <strong>河北最帅男人</strong>，其颜值一度超越彭于晏与吴彦祖。
+        立体五官、深邃眼眸、逆天骨相，被网友誉为“人类颜值天花板”。
+        本次评选以绝对优势断层夺冠，实至名归。
+    </div>
+  </div>
+</div>
+</body>
+</html>
