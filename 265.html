@@ -3,14 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>🎰 老虎机 · 幸运点名</title>
+    <title>🎰 老虎机 · 幸运点名 (音效修正v2)</title>
     <style>
-        /* ===== 全局 ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             min-height: 100vh;
@@ -18,14 +13,12 @@
             justify-content: center;
             align-items: center;
             font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
-            background: #4a0c0c;
             background: radial-gradient(ellipse at 50% 30%, #7a1a0a, #4a0c0c 60%, #2a0606);
             overflow: hidden;
             user-select: none;
             padding: 16px;
         }
 
-        /* ===== 主容器 ===== */
         .container {
             display: flex;
             flex-direction: column;
@@ -33,23 +26,67 @@
             width: 100%;
             max-width: 560px;
             z-index: 1;
+            position: relative;
         }
+
+        /* ===== 喇叭按钮 ===== */
+        .speaker-btn {
+            position: absolute;
+            top: -8px;
+            right: 0;
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #d4783a, #a0501a);
+            border: 2px solid #ffb87a;
+            box-shadow: 0 6px 24px rgba(255, 140, 66, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            z-index: 99;
+            color: #fff;
+            outline: none;
+        }
+        .speaker-btn:hover { transform: scale(1.06); }
+        .speaker-btn:active { transform: scale(0.94); }
+        .speaker-btn.muted {
+            background: linear-gradient(145deg, #6a4a3a, #3a2a1a);
+            border-color: #8a6a5a;
+            color: #aa8a7a;
+        }
+
+        .speaker-tip {
+            position: absolute;
+            top: 58px;
+            right: 2px;
+            background: rgba(30, 15, 5, 0.9);
+            color: #ffb87a;
+            font-size: 0.65rem;
+            padding: 4px 10px;
+            border-radius: 12px;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0.8;
+            transition: opacity 0.4s ease;
+        }
+        .speaker-tip.hide { opacity: 0; }
 
         /* ===== 标题 ===== */
         .slot-title {
             font-size: 1.8rem;
             font-weight: 900;
             color: #ff8c42;
-            text-shadow: 0 0 40px rgba(255, 140, 66, 0.25), 0 2px 0 #8a4a1a, 0 4px 12px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 0 40px rgba(255, 140, 66, 0.25), 0 2px 0 #8a4a1a;
             letter-spacing: 6px;
             margin-bottom: 16px;
             display: flex;
             align-items: center;
             gap: 12px;
         }
-        .slot-title span {
-            font-size: 2rem;
-        }
+        .slot-title span { font-size: 2rem; }
 
         /* ===== 老虎机主体 ===== */
         .slot-machine {
@@ -61,38 +98,9 @@
             border: 4px solid #d4783a;
             border-top-color: #f5a05a;
             border-bottom-color: #a0602a;
-            box-shadow:
-                0 20px 60px rgba(0, 0, 0, 0.8),
-                0 0 80px rgba(255, 140, 66, 0.08),
-                inset 0 2px 0 rgba(255, 160, 80, 0.15),
-                inset 0 -2px 0 rgba(0, 0, 0, 0.4);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8), inset 0 2px 0 rgba(255,160,80,0.15);
         }
 
-        .slot-machine::before {
-            content: '';
-            position: absolute;
-            top: -5px;
-            left: 20%;
-            right: 20%;
-            height: 5px;
-            background: linear-gradient(90deg, transparent, #f5a05a, #d4783a, #f5a05a, transparent);
-            border-radius: 0 0 4px 4px;
-            opacity: 0.5;
-        }
-
-        .slot-machine::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 30%;
-            right: 30%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #8a5a2a, transparent);
-            border-radius: 4px;
-            opacity: 0.3;
-        }
-
-        /* ===== 转盘容器 ===== */
         .reels-container {
             display: flex;
             gap: 10px;
@@ -100,7 +108,6 @@
             padding: 4px 2px;
         }
 
-        /* ===== 单个转盘 ===== */
         .reel {
             flex: 1;
             aspect-ratio: 0.8 / 1;
@@ -110,45 +117,30 @@
             border: 3px solid #5a3a2a;
             border-top-color: #8a6a4a;
             border-bottom-color: #2a1a1a;
-            box-shadow:
-                inset 0 0 50px rgba(0, 0, 0, 0.7),
-                inset 0 8px 30px rgba(255, 140, 66, 0.04),
-                0 4px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.7);
             position: relative;
             overflow: hidden;
             transition: border-color 0.4s ease, box-shadow 0.4s ease;
         }
 
-        /* 转盘玻璃反光 */
         .reel::before {
             content: '';
             position: absolute;
-            top: 4%;
-            left: 8%;
-            right: 35%;
-            height: 18%;
-            background: radial-gradient(ellipse, rgba(255, 255, 255, 0.07), transparent);
+            top: 4%; left: 8%; right: 35%; height: 18%;
+            background: radial-gradient(ellipse, rgba(255,255,255,0.07), transparent);
             border-radius: 50%;
             pointer-events: none;
             z-index: 5;
         }
 
-        /* 上下遮罩 - 制造进出场景的淡出感 */
         .reel::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background:
-                linear-gradient(180deg,
-                    rgba(10, 10, 18, 0.85) 0%,
-                    rgba(10, 10, 18, 0.3) 18%,
-                    transparent 35%,
-                    transparent 65%,
-                    rgba(10, 10, 18, 0.3) 82%,
-                    rgba(10, 10, 18, 0.85) 100%);
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(180deg,
+                rgba(10,10,18,0.85) 0%, rgba(10,10,18,0.3) 18%,
+                transparent 35%, transparent 65%,
+                rgba(10,10,18,0.3) 82%, rgba(10,10,18,0.85) 100%);
             pointer-events: none;
             z-index: 4;
         }
@@ -156,26 +148,15 @@
         .reel.active {
             border-color: #d4783a;
             border-top-color: #f5a05a;
-            border-bottom-color: #a0602a;
-            box-shadow:
-                inset 0 0 50px rgba(0, 0, 0, 0.7),
-                inset 0 8px 30px rgba(255, 140, 66, 0.08),
-                0 0 40px rgba(255, 140, 66, 0.06),
-                0 4px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.7), 0 0 40px rgba(255,140,66,0.06);
         }
 
         .reel.stopped {
             border-color: #f5a05a;
             border-top-color: #ffc080;
-            border-bottom-color: #d4783a;
-            box-shadow:
-                inset 0 0 50px rgba(0, 0, 0, 0.7),
-                inset 0 8px 30px rgba(255, 140, 66, 0.12),
-                0 0 60px rgba(255, 140, 66, 0.1),
-                0 4px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.7), 0 0 60px rgba(255,140,66,0.1);
         }
 
-        /* ===== 卷轴窗口 ===== */
         .reel-window {
             position: relative;
             width: 100%;
@@ -184,7 +165,6 @@
             z-index: 2;
         }
 
-        /* ===== 卷轴条 ===== */
         .reel-strip {
             display: flex;
             flex-direction: column;
@@ -195,7 +175,6 @@
             backface-visibility: hidden;
         }
 
-        /* ===== 名字项 ===== */
         .reel-item {
             display: flex;
             align-items: center;
@@ -209,39 +188,22 @@
             text-align: center;
             word-break: break-word;
             line-height: 1.2;
-            box-sizing: border-box;
-            text-shadow: 0 0 30px rgba(255, 140, 66, 0.05);
+            text-shadow: 0 0 30px rgba(255,140,66,0.05);
         }
 
-        /* ===== 结果弹出 ===== */
         .reel-item.result-pop {
             animation: resultPop 0.75s cubic-bezier(0.22, 1.6, 0.36, 1) forwards;
             color: #ff8c42 !important;
-            text-shadow: 0 0 60px rgba(255, 140, 66, 0.3), 0 0 120px rgba(255, 140, 66, 0.1) !important;
+            text-shadow: 0 0 60px rgba(255,140,66,0.3) !important;
         }
 
         @keyframes resultPop {
-            0% {
-                transform: scale(0.3) rotate(-5deg);
-                opacity: 0;
-                filter: blur(14px);
-            }
-            45% {
-                transform: scale(1.22) rotate(2deg);
-                opacity: 1;
-                filter: blur(0);
-            }
-            65% {
-                transform: scale(0.92) rotate(-1deg);
-            }
-            100% {
-                transform: scale(1) rotate(0deg);
-                opacity: 1;
-                filter: blur(0);
-            }
+            0% { transform: scale(0.3) rotate(-5deg); opacity: 0; filter: blur(14px); }
+            45% { transform: scale(1.22) rotate(2deg); opacity: 1; filter: blur(0); }
+            65% { transform: scale(0.92) rotate(-1deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; filter: blur(0); }
         }
 
-        /* ===== 装饰灯 ===== */
         .reel-lights {
             display: flex;
             justify-content: center;
@@ -250,28 +212,25 @@
             margin-bottom: 2px;
         }
         .reel-light {
-            width: 9px;
-            height: 9px;
+            width: 9px; height: 9px;
             border-radius: 50%;
             background: #2a1a1a;
-            box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.6);
+            box-shadow: inset 0 0 6px rgba(0,0,0,0.6);
             transition: all 0.25s ease;
         }
         .reel-light.on {
             background: #ff8c42;
-            box-shadow: 0 0 18px rgba(255, 140, 66, 0.6), inset 0 0 6px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 18px rgba(255,140,66,0.6);
         }
         .reel-light.on.green {
             background: #ff6a00;
-            box-shadow: 0 0 18px rgba(255, 100, 0, 0.5), inset 0 0 6px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 18px rgba(255,100,0,0.5);
         }
 
-        /* ===== 控制区 ===== */
         .slot-controls {
             margin-top: 22px;
             display: flex;
             justify-content: center;
-            width: 100%;
         }
 
         .btn-spin {
@@ -284,88 +243,27 @@
             border-radius: 60px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow:
-                0 8px 36px rgba(212, 73, 10, 0.4),
-                0 4px 12px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 36px rgba(212,73,10,0.4);
             letter-spacing: 4px;
-            position: relative;
             min-width: 200px;
-            border: 1px solid rgba(255, 200, 100, 0.12);
         }
+        .btn-spin:hover:not(:disabled) { transform: translateY(-2px) scale(1.02); }
+        .btn-spin:active:not(:disabled) { transform: translateY(1px) scale(0.96); }
+        .btn-spin:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(0.2); }
 
-        .btn-spin::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: 15%;
-            right: 15%;
-            height: 4px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-            border-radius: 4px;
-            opacity: 0.4;
-        }
-
-        .btn-spin:hover:not(:disabled) {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow:
-                0 12px 44px rgba(212, 73, 10, 0.5),
-                0 4px 12px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.25);
-        }
-
-        .btn-spin:active:not(:disabled) {
-            transform: translateY(1px) scale(0.96);
-            box-shadow: 0 4px 20px rgba(212, 73, 10, 0.3);
-        }
-
-        .btn-spin:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: scale(0.98);
-            filter: grayscale(0.2);
-            box-shadow: 0 4px 16px rgba(212, 73, 10, 0.15);
-        }
-
-        .btn-spin .btn-icon {
-            display: inline-block;
-            margin-right: 8px;
-            transition: transform 0.3s ease;
-        }
-        .btn-spin:not(:disabled):hover .btn-icon {
-            transform: rotate(-12deg) scale(1.1);
-        }
-
-        /* ===== 状态文字 ===== */
         .status-text {
             margin-top: 14px;
             font-size: 0.95rem;
-            color: rgba(255, 140, 66, 0.3);
+            color: rgba(255,140,66,0.3);
             letter-spacing: 2px;
-            font-weight: 300;
             min-height: 1.8rem;
             text-align: center;
             transition: all 0.4s ease;
         }
-        .status-text.active {
-            color: rgba(255, 140, 66, 0.6);
-            animation: statusPulse 0.5s ease-in-out infinite alternate;
-        }
-        .status-text.result {
-            color: #ff8c42;
-            font-weight: 600;
-            animation: statusPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        }
-        @keyframes statusPulse {
-            0% { opacity: 0.4; }
-            100% { opacity: 1; }
-        }
-        @keyframes statusPop {
-            0% { transform: scale(0.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
+        .status-text.active { color: rgba(255,140,66,0.6); animation: statusPulse 0.5s infinite alternate; }
+        .status-text.result { color: #ff8c42; font-weight: 600; }
+        @keyframes statusPulse { 0% { opacity: 0.4; } 100% { opacity: 1; } }
 
-        /* ===== 历史记录 ===== */
         .history-section {
             margin-top: 12px;
             display: flex;
@@ -373,108 +271,63 @@
             gap: 5px;
             justify-content: center;
             min-height: 26px;
-            padding: 0 4px;
             width: 100%;
             max-width: 440px;
         }
         .history-tag {
             padding: 2px 14px;
-            background: rgba(255, 140, 66, 0.05);
-            border: 1px solid rgba(255, 140, 66, 0.06);
+            background: rgba(255,140,66,0.05);
+            border: 1px solid rgba(255,140,66,0.06);
             border-radius: 12px;
             font-size: 0.7rem;
-            color: rgba(255, 140, 66, 0.25);
-            animation: tagIn 0.3s ease forwards;
+            color: rgba(255,140,66,0.25);
             white-space: nowrap;
         }
         .history-tag.highlight {
             color: #ff8c42;
-            border-color: rgba(255, 140, 66, 0.15);
-            background: rgba(255, 140, 66, 0.06);
-        }
-        @keyframes tagIn {
-            0% { transform: scale(0.5); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+            border-color: rgba(255,140,66,0.15);
         }
         .history-empty {
-            color: rgba(255, 140, 66, 0.1);
+            color: rgba(255,140,66,0.1);
             font-size: 0.7rem;
-            letter-spacing: 1px;
             font-weight: 300;
         }
 
-        /* ===== 脚 ===== */
-        .slot-feet {
-            display: flex;
-            justify-content: center;
-            gap: 38%;
-            margin-top: 4px;
-            padding: 0 20%;
-        }
-        .slot-foot {
-            width: 22px;
-            height: 8px;
-            background: radial-gradient(ellipse, #5a3a2a, #1a0e05);
-            border-radius: 50%;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-        }
-
-        /* ===== 响应式 ===== */
         @media (max-width: 520px) {
-            .slot-title { font-size: 1.3rem; letter-spacing: 3px; gap: 8px; margin-bottom: 12px; }
+            .slot-title { font-size: 1.3rem; letter-spacing: 3px; }
             .slot-title span { font-size: 1.4rem; }
-            .slot-machine { padding: 16px 12px 20px; border-radius: 28px 28px 22px 22px; }
+            .slot-machine { padding: 16px 12px 20px; border-radius: 28px; }
             .reels-container { gap: 6px; }
-            .reel { border-radius: 12px; border-width: 2px; aspect-ratio: 0.75 / 1; max-width: 110px; }
+            .reel { border-radius: 12px; border-width: 2px; max-width: 110px; }
             .reel-item { font-size: 1.5rem; }
-            .reel-lights { gap: 8px; margin-top: 10px; }
-            .reel-light { width: 7px; height: 7px; }
-            .btn-spin { padding: 14px 32px; font-size: 1.1rem; min-width: 160px; letter-spacing: 2px; }
-            .slot-controls { margin-top: 16px; }
-            .status-text { font-size: 0.8rem; min-height: 1.4rem; margin-top: 10px; }
-            .history-section { margin-top: 8px; }
-            .history-tag { font-size: 0.6rem; padding: 1px 10px; }
+            .btn-spin { padding: 14px 32px; font-size: 1.1rem; min-width: 160px; }
+            .speaker-btn { width: 44px; height: 44px; font-size: 1.4rem; }
+            .speaker-tip { font-size: 0.55rem; top: 48px; }
         }
-
         @media (max-width: 400px) {
             .reel-item { font-size: 1.1rem; }
-            .reel { max-width: 85px; border-radius: 10px; }
-            .reels-container { gap: 4px; }
+            .reel { max-width: 85px; }
             .btn-spin { padding: 12px 24px; font-size: 0.95rem; min-width: 130px; }
-            .slot-machine { padding: 12px 8px 16px; }
-            .slot-title { font-size: 1.0rem; letter-spacing: 2px; }
-            .slot-title span { font-size: 1.1rem; }
-            .reel-lights { gap: 5px; margin-top: 8px; }
-            .reel-light { width: 5px; height: 5px; }
+            .speaker-btn { width: 38px; height: 38px; font-size: 1.2rem; }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
+        <button class="speaker-btn" id="speakerBtn" aria-label="切换声音">🔊</button>
+        <div class="speaker-tip hide" id="speakerTip">点击开关声音</div>
+
         <div class="slot-title">
             <span>🎰</span> 幸运老虎机 <span>🎰</span>
         </div>
 
         <div class="slot-machine">
             <div class="reels-container">
-                <div class="reel" id="reel1">
-                    <div class="reel-window">
-                        <div class="reel-strip" id="strip1"></div>
-                    </div>
-                </div>
-                <div class="reel" id="reel2">
-                    <div class="reel-window">
-                        <div class="reel-strip" id="strip2"></div>
-                    </div>
-                </div>
-                <div class="reel" id="reel3">
-                    <div class="reel-window">
-                        <div class="reel-strip" id="strip3"></div>
-                    </div>
-                </div>
+                <div class="reel" id="reel1"><div class="reel-window"><div class="reel-strip" id="strip1"></div></div></div>
+                <div class="reel" id="reel2"><div class="reel-window"><div class="reel-strip" id="strip2"></div></div></div>
+                <div class="reel" id="reel3"><div class="reel-window"><div class="reel-strip" id="strip3"></div></div></div>
             </div>
-
             <div class="reel-lights">
                 <div class="reel-light" id="light1"></div>
                 <div class="reel-light" id="light2"></div>
@@ -482,17 +335,10 @@
                 <div class="reel-light" id="light4"></div>
                 <div class="reel-light" id="light5"></div>
             </div>
-
-            <div class="slot-feet">
-                <div class="slot-foot"></div>
-                <div class="slot-foot"></div>
-            </div>
         </div>
 
         <div class="slot-controls">
-            <button class="btn-spin" id="spinBtn">
-                <span class="btn-icon">🎲</span> 开始点名
-            </button>
+            <button class="btn-spin" id="spinBtn"><span class="btn-icon">🎲</span> 开始点名</button>
         </div>
 
         <div class="status-text" id="statusText">点击按钮 · 幸运降临</div>
@@ -504,421 +350,464 @@
 
     <script>
         // ================================================================
-        //  配置
+        //  音频系统 v3 (修正版)
+        //  1. 转盘声: 低频颗粒, 点击瞬间响起, 抽中立即停止
+        //  2. 恭喜旋律: 4 #2 4 #2 1 -- 4 #2 4 #2 4
         // ================================================================
+        let audioCtx = null;
+        let soundEnabled = true;
 
+        // 转盘音效节点
+        let grainNodes = [];      // 存放所有颗粒的节点，便于统一停止
+        let grainGainNode = null;
+        let grainStopScheduled = false;
+
+        const speakerBtn = document.getElementById('speakerBtn');
+        const speakerTip = document.getElementById('speakerTip');
+
+        function initAudioContext() {
+            if (audioCtx) return;
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        function resumeAudioContext() {
+            if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        // ---- 强力停止所有转盘音效（杜绝抽中后还在响） ----
+        function forceStopAllGrain() {
+            // 立即断开增益节点
+            if (grainGainNode) {
+                try {
+                    const now = audioCtx ? audioCtx.currentTime : 0;
+                    grainGainNode.gain.cancelScheduledValues(now);
+                    grainGainNode.gain.setValueAtTime(0, now);
+                    grainGainNode.disconnect();
+                } catch (e) {}
+                grainGainNode = null;
+            }
+            // 停止所有已创建的源节点
+            grainNodes.forEach(node => {
+                try { node.stop(0); } catch (e) {}
+                try { node.disconnect(); } catch (e) {}
+            });
+            grainNodes = [];
+            grainStopScheduled = true; // 标记，让调度循环退出
+        }
+
+        // ---- 转盘颗粒音效: 低频, 由密到疏, 点击瞬间开始 ----
+        function startGrainSound(durationSec) {
+            if (!soundEnabled) return;
+            initAudioContext();
+            if (!audioCtx) return;
+            resumeAudioContext();
+
+            // 先强制清掉可能残留的
+            forceStopAllGrain();
+            grainStopScheduled = false;
+
+            const startTime = audioCtx.currentTime;
+            const endTime = startTime + durationSec;
+
+            // 总增益（低频，不刺耳）
+            grainGainNode = audioCtx.createGain();
+            grainGainNode.gain.value = 0.5;
+            grainGainNode.connect(audioCtx.destination);
+
+            // 使用精确的 Web Audio 调度：一次性排好所有颗粒，绝不漂移
+            // 间隔从 22ms 逐渐增加到 100ms（由密到疏）
+            let t = 0;
+            const totalDur = durationSec;
+            const minInterval = 0.022;   // 22ms 起手（密集但不刺耳）
+            const maxInterval = 0.100;   // 100ms 结尾（一颗一颗）
+
+            while (t < totalDur) {
+                const progress = t / totalDur;
+                // 间隔用二次曲线增长，早期慢后期快
+                const interval = minInterval + (maxInterval - minInterval) * (progress * progress);
+
+                // 在 startTime + t 时刻创建一颗低频颗粒
+                createLowFreqGrain(startTime + t, progress);
+
+                t += interval;
+            }
+        }
+
+        // 创建单颗低频颗粒（不刺耳）
+        function createLowFreqGrain(when, progress) {
+            if (!audioCtx || !grainGainNode) return;
+
+            // 低频：从 420Hz 降到 220Hz，沉闷厚实
+            const baseFreq = 420 - progress * 200; // 420 -> 220
+            const volume = 0.28 * (1 - progress * 0.55); // 0.28 -> 0.126
+
+            // ---- 低频振荡脉冲（主体“咚”声）----
+            const osc = audioCtx.createOscillator();
+            osc.type = 'sine';                    // 正弦波最干净，不刺耳
+            osc.frequency.value = baseFreq;
+
+            const oscGain = audioCtx.createGain();
+            oscGain.gain.setValueAtTime(0, when);
+            oscGain.gain.linearRampToValueAtTime(volume, when + 0.002);
+            oscGain.gain.exponentialRampToValueAtTime(0.001, when + 0.035);
+
+            osc.connect(oscGain);
+            oscGain.connect(grainGainNode);
+
+            osc.start(when);
+            osc.stop(when + 0.04);
+            grainNodes.push(osc);
+
+            // ---- 极短的低频噪声（增加“颗粒感”，但用低通滤波去掉刺耳高频）----
+            const noiseLen = Math.floor(audioCtx.sampleRate * 0.012);
+            const noiseBuffer = audioCtx.createBuffer(1, noiseLen, audioCtx.sampleRate);
+            const noiseData = noiseBuffer.getChannelData(0);
+            for (let i = 0; i < noiseLen; i++) {
+                const decay = Math.exp(-i / (audioCtx.sampleRate * 0.002));
+                noiseData[i] = (Math.random() * 2 - 1) * decay;
+            }
+            const noiseSource = audioCtx.createBufferSource();
+            noiseSource.buffer = noiseBuffer;
+
+            // 低通滤波，砍掉高频，让声音厚实不刺耳
+            const lowpass = audioCtx.createBiquadFilter();
+            lowpass.type = 'lowpass';
+            lowpass.frequency.value = baseFreq * 1.5; // 跟随基频，保持低频特性
+            lowpass.Q.value = 0.7;
+
+            const noiseGain = audioCtx.createGain();
+            noiseGain.gain.setValueAtTime(0, when);
+            noiseGain.gain.linearRampToValueAtTime(volume * 0.5, when + 0.001);
+            noiseGain.gain.exponentialRampToValueAtTime(0.001, when + 0.02);
+
+            noiseSource.connect(lowpass);
+            lowpass.connect(noiseGain);
+            noiseGain.connect(grainGainNode);
+
+            noiseSource.start(when);
+            noiseSource.stop(when + 0.025);
+            grainNodes.push(noiseSource);
+        }
+
+        // ---- 恭喜发财旋律 (根据用户提供的简谱) ----
+        // 简谱: 4 #2 4 #2 1 -- 4 #2 4 #2 4
+        // 设 1 = C4 (261.63Hz) 方便计算
+        // 4 = F4 (349.23), #2 = D#4 (311.13), 1 = C4 (261.63)
+        function playCongratsMelody() {
+            if (!soundEnabled) return;
+            initAudioContext();
+            if (!audioCtx) return;
+            resumeAudioContext();
+
+            const now = audioCtx.currentTime;
+
+            // 频率映射 (1 = C4)
+            const F4  = 349.23;  // 4
+            const Ds4 = 311.13;  // #2
+            const C4  = 261.63;  // 1
+
+            // 旋律序列: 4 #2 4 #2 1 -- 4 #2 4 #2 4
+            // 用时间轴排布，注意长短
+            const melody = [
+                { freq: F4,  start: 0.00, dur: 0.28 },  // 4
+                { freq: Ds4, start: 0.30, dur: 0.28 },  // #2
+                { freq: F4,  start: 0.60, dur: 0.28 },  // 4
+                { freq: Ds4, start: 0.90, dur: 0.28 },  // #2
+                { freq: C4,  start: 1.20, dur: 0.60 },  // 1 -- (拖长)
+                { freq: F4,  start: 1.90, dur: 0.28 },  // 4
+                { freq: Ds4, start: 2.20, dur: 0.28 },  // #2
+                { freq: F4,  start: 2.50, dur: 0.28 },  // 4
+                { freq: Ds4, start: 2.80, dur: 0.28 },  // #2
+                { freq: F4,  start: 3.10, dur: 0.50 },  // 4 (收尾)
+            ];
+
+            const masterGain = audioCtx.createGain();
+            masterGain.gain.value = 0.38;
+            masterGain.connect(audioCtx.destination);
+
+            melody.forEach(note => {
+                const osc = audioCtx.createOscillator();
+                osc.type = 'triangle';   // 温暖，像人声/号角
+                osc.frequency.value = note.freq;
+
+                const gain = audioCtx.createGain();
+                gain.gain.setValueAtTime(0, now + note.start);
+                gain.gain.linearRampToValueAtTime(0.6, now + note.start + 0.03);
+                gain.gain.linearRampToValueAtTime(0.3, now + note.start + note.dur * 0.55);
+                gain.gain.linearRampToValueAtTime(0, now + note.start + note.dur);
+
+                osc.connect(gain);
+                gain.connect(masterGain);
+                osc.start(now + note.start);
+                osc.stop(now + note.start + note.dur + 0.05);
+
+                // 加一点二次谐波，更明亮但不刺耳
+                const osc2 = audioCtx.createOscillator();
+                osc2.type = 'sine';
+                osc2.frequency.value = note.freq * 2;
+                const gain2 = audioCtx.createGain();
+                gain2.gain.setValueAtTime(0, now + note.start);
+                gain2.gain.linearRampToValueAtTime(0.1, now + note.start + 0.02);
+                gain2.gain.exponentialRampToValueAtTime(0.001, now + note.start + note.dur);
+                osc2.connect(gain2);
+                gain2.connect(masterGain);
+                osc2.start(now + note.start);
+                osc2.stop(now + note.start + note.dur + 0.05);
+            });
+        }
+
+        // ---- 声音开关 ----
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            if (soundEnabled) {
+                speakerBtn.textContent = '🔊';
+                speakerBtn.classList.remove('muted');
+                speakerTip.textContent = '声音已开启';
+                initAudioContext();
+                resumeAudioContext();
+            } else {
+                speakerBtn.textContent = '🔇';
+                speakerBtn.classList.add('muted');
+                speakerTip.textContent = '声音已关闭';
+                forceStopAllGrain();
+            }
+            speakerTip.classList.remove('hide');
+            clearTimeout(speakerTip._hideTimer);
+            speakerTip._hideTimer = setTimeout(() => speakerTip.classList.add('hide'), 1800);
+        }
+
+        speakerBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleSound(); });
+        speakerBtn.addEventListener('mouseenter', () => speakerTip.classList.remove('hide'));
+        speakerBtn.addEventListener('mouseleave', () => {
+            if (speakerTip._hideTimer) clearTimeout(speakerTip._hideTimer);
+            speakerTip._hideTimer = setTimeout(() => speakerTip.classList.add('hide'), 800);
+        });
+
+        document.addEventListener('click', function initOnce() {
+            initAudioContext(); resumeAudioContext();
+            document.removeEventListener('click', initOnce);
+        }, { once: true });
+
+        // ================================================================
+        //  转盘逻辑 (保持不变)
+        // ================================================================
         const NAMES = [
-            '波波老师', '李文勇', '吴大月', '匡建茴', '李克晴',
+            '波波老师', '李文勇', '吴大月', '筐建茴', '李克晴',
             '芊珠', '李祖恩', '三达', '张世全',
             '茶田慧', '肖岩布勒', '王雪梅', '玉坎欢', '微微',
-            '二英', '玉儿香', '马玉青', '陈岩明', '李尼保',
-            '鲍最', '鲍岩长', '孙子亮', '李臭臭', '岩明',
-            , '陈浩明', '鲍欧勇', '匡建茴',
+            '二英', '玉儿香', '马玉清', '陈岩明', '李尼保',
+            '鲍最', '鲍岩长', '李臭臭', '岩明',
+            , '陈浩明', '鲍欧勇',
             '大培', '杨双燕', '鲍岩亮', '李尼邦', '岩然（无法选中）'
         ];
 
-        // 总时长 (ms) - 每个转盘的滚动时长
         const SPIN_DURATION = 4200;
-
-        // 转盘之间的停止延迟 (ms) - 左→中→右依次停止
         const REEL_STOP_DELAYS = [0, 400, 800];
-
-        // 减速曲线参数：越接近停止，减速越快
-        // 滚动总距离（以item数量计）
         const TOTAL_SCROLL_ITEMS = 45;
-
-        // ================================================================
-        //  状态
-        // ================================================================
 
         let isRunning = false;
         let history = [];
         let lastIndex = -1;
 
         const reelEls = [
-            document.getElementById('reel1'),
-            document.getElementById('reel2'),
-            document.getElementById('reel3')
+            document.getElementById('reel1'), document.getElementById('reel2'), document.getElementById('reel3')
         ];
         const stripEls = [
-            document.getElementById('strip1'),
-            document.getElementById('strip2'),
-            document.getElementById('strip3')
+            document.getElementById('strip1'), document.getElementById('strip2'), document.getElementById('strip3')
         ];
         const lights = [
-            document.getElementById('light1'),
-            document.getElementById('light2'),
-            document.getElementById('light3'),
-            document.getElementById('light4'),
-            document.getElementById('light5')
+            document.getElementById('light1'), document.getElementById('light2'), document.getElementById('light3'),
+            document.getElementById('light4'), document.getElementById('light5')
         ];
         const spinBtn = document.getElementById('spinBtn');
         const statusText = document.getElementById('statusText');
         const historySection = document.getElementById('historySection');
 
-        // 每个转盘的动画控制
         const reelAnims = [null, null, null];
         const reelItemHeights = [0, 0, 0];
-
-        // ================================================================
-        //  工具
-        // ================================================================
 
         function getRandomName() {
             if (NAMES.length === 0) return '⚠️';
             if (NAMES.length === 1) return NAMES[0];
-            let idx;
-            let attempts = 0;
-            do {
-                idx = Math.floor(Math.random() * NAMES.length);
-                attempts++;
-                if (attempts > 50) break;
-            } while (idx === lastIndex && NAMES.length > 1);
+            let idx, attempts = 0;
+            do { idx = Math.floor(Math.random() * NAMES.length); attempts++; if (attempts > 50) break; }
+            while (idx === lastIndex && NAMES.length > 1);
             lastIndex = idx;
             return NAMES[idx];
         }
 
         function getRandomNameExcept(exclude) {
             if (NAMES.length <= 1) return NAMES[0] || '⚠️';
-            let name;
-            let attempts = 0;
-            do {
-                name = getRandomName();
-                attempts++;
-                if (attempts > 50) break;
-            } while (name === exclude);
+            let name, attempts = 0;
+            do { name = getRandomName(); attempts++; if (attempts > 50) break; } while (name === exclude);
             return name;
         }
 
-        // ================================================================
-        //  转盘渲染
-        // ================================================================
-
-        /**
-         * 初始化卷轴DOM
-         * 每个转盘渲染固定数量的item (足够整个动画使用)
-         */
         function setupReel(reelIndex) {
             const strip = stripEls[reelIndex];
             const reel = reelEls[reelIndex];
-
-            // 计算item高度 = 转盘高度 / 3 (显示3个)
             const h = reel.clientHeight / 3;
             reelItemHeights[reelIndex] = h;
-
-            // 生成足够多的item用于滚动
-            // 滚动总距离 TOTAL_SCROLL_ITEMS 个item + 显示需要的3个
             const totalItems = TOTAL_SCROLL_ITEMS + 6;
             let html = '';
             const usedNames = [];
-
             for (let i = 0; i < totalItems; i++) {
-                // 生成名字序列，避免连续重复
                 let name;
-                if (i === totalItems - 2) {
-                    // 倒数第二个位置留给目标名字
-                    name = '__TARGET__';
-                } else {
-                    name = getRandomNameExcept(usedNames[usedNames.length - 1]);
-                }
+                if (i === totalItems - 2) { name = '__TARGET__'; }
+                else { name = getRandomNameExcept(usedNames[usedNames.length - 1]); }
                 usedNames.push(name);
                 html += `<div class="reel-item" style="height:${h}px;">${name === '__TARGET__' ? '?' : name}</div>`;
             }
-
             strip.innerHTML = html;
             strip.style.transform = 'translateY(0)';
         }
 
-        /**
-         * 启动单个转盘的滚动动画
-         * @param {number} reelIndex
-         * @param {string} targetName - 最终停止的名字
-         * @param {number} duration - 滚动时长
-         * @param {number} delay - 延迟启动时间
-         */
         function animateReel(reelIndex, targetName, duration, delay) {
             const strip = stripEls[reelIndex];
             const reel = reelEls[reelIndex];
             const itemH = reelItemHeights[reelIndex];
-
-            // 获取所有item
             const items = strip.children;
             const totalItems = items.length;
-
-            // 找到目标名字应该出现的位置：最后一个目标位置
-            // 我们把目标名字放在倒数第二个item上，然后滚动到它
             const targetItemIndex = totalItems - 2;
-
-            // 把目标名字写进去
             items[targetItemIndex].textContent = targetName;
-
-            // 最终停止位置：让 targetItemIndex 这个item 对准中间
-            // 容器显示3个item，中间的是第2个 (索引1)
-            // 要让 targetItemIndex 出现在中间位置，需要滚动:
-            // finalY = -(targetItemIndex - 1) * itemH
             const finalY = -(targetItemIndex - 1) * itemH;
-
-            // 初始位置
             let startY = 0;
-
-            // 启动动画
             const startTime = performance.now();
 
-            // 清除之前的动画
-            if (reelAnims[reelIndex]) {
-                cancelAnimationFrame(reelAnims[reelIndex]);
-                reelAnims[reelIndex] = null;
-            }
-
-            // 标记为活动
+            if (reelAnims[reelIndex]) { cancelAnimationFrame(reelAnims[reelIndex]); reelAnims[reelIndex] = null; }
             reel.classList.add('active');
             reel.classList.remove('stopped');
 
-            // 动画循环
             function tick(now) {
-                if (!isRunning && now - startTime > duration + 200) {
-                    return;
-                }
-
+                if (!isRunning && now - startTime > duration + 200) return;
                 const elapsed = now - startTime - delay;
-
-                if (elapsed < 0) {
-                    reelAnims[reelIndex] = requestAnimationFrame(tick);
-                    return;
-                }
-
+                if (elapsed < 0) { reelAnims[reelIndex] = requestAnimationFrame(tick); return; }
                 const progress = Math.min(elapsed / duration, 1);
-
-                // ==================================================
-                //  核心缓动曲线
-                //  使用 easeOutQuint + easeOutExpo 混合
-                //  开始快速滚动，结尾平滑减速
-                // ==================================================
-
-                // 使用 easeOutExpo 的变体，让结尾非常平滑
-                // p = 1 - 2^(-10t)
                 const easeOutExpo = 1 - Math.pow(2, -10 * progress);
-
-                // 再加上一点点二次曲线来微调
                 const easeOutQuad = 1 - (1 - progress) * (1 - progress);
-
-                // 混合：前70%用expo，后30%用quad让结尾更柔和
                 let eased;
-                if (progress < 0.7) {
-                    eased = easeOutExpo * 0.85 + easeOutQuad * 0.15;
-                } else {
+                if (progress < 0.7) { eased = easeOutExpo * 0.85 + easeOutQuad * 0.15; }
+                else {
                     const p2 = (progress - 0.7) / 0.3;
                     const expoEnd = 1 - Math.pow(2, -10 * 0.7);
                     const quadEnd = 1 - (1 - 0.7) * (1 - 0.7);
                     const mixEnd = expoEnd * 0.85 + quadEnd * 0.15;
-                    const softEnd = 1 - Math.pow(1 - p2, 3); // easeOutCubic
+                    const softEnd = 1 - Math.pow(1 - p2, 3);
                     eased = mixEnd + (1 - mixEnd) * softEnd;
                 }
-
-                // 当前Y位置
                 const currentY = startY + (finalY - startY) * eased;
-
-                // 应用transform
                 strip.style.transform = `translateY(${currentY}px)`;
-
-                // 更新模糊效果
                 updateBlur(reelIndex, progress);
 
-                if (progress < 1) {
-                    reelAnims[reelIndex] = requestAnimationFrame(tick);
-                } else {
-                    // 动画完成
+                if (progress < 1) { reelAnims[reelIndex] = requestAnimationFrame(tick); }
+                else {
                     strip.style.transform = `translateY(${finalY}px)`;
                     clearBlur(reelIndex);
                     reelAnims[reelIndex] = null;
-
-                    // 高亮
                     reel.classList.remove('active');
                     reel.classList.add('stopped');
-
-                    // 对中间项添加弹出动画
                     const midIndex = targetItemIndex;
                     if (items[midIndex]) {
                         items[midIndex].classList.add('result-pop');
-                        // 确保它完全清晰
                         items[midIndex].style.filter = 'none';
                         items[midIndex].style.opacity = '1';
                     }
-
-                    // 清除其他项的动画
-                    for (let i = 0; i < items.length; i++) {
-                        if (i !== midIndex) {
-                            items[i].classList.remove('result-pop');
-                        }
-                    }
+                    for (let i = 0; i < items.length; i++) { if (i !== midIndex) items[i].classList.remove('result-pop'); }
                 }
             }
-
             reelAnims[reelIndex] = requestAnimationFrame(tick);
         }
 
-        /**
-         * 根据进度更新模糊效果
-         * 快速时模糊，慢速时逐渐清晰
-         */
         function updateBlur(reelIndex, progress) {
             const strip = stripEls[reelIndex];
-            const items = strip.children;
-
-            // 速度曲线：progress越小速度越快
-            // 用 e ^ (-3 * progress) 模拟速度衰减
             const speed = Math.exp(-3.5 * progress);
-
-            // 模糊强度：速度越快模糊越强
-            const blurAmount = speed * 8; // 最大8px
-
-            // 对整个strip应用filter，性能更好
-            if (blurAmount > 0.5) {
-                strip.style.filter = `blur(${blurAmount}px)`;
-                // 同时让颜色变得"糊"
-                const brightness = 1 + speed * 0.3;
-                strip.style.filter = `blur(${blurAmount}px) brightness(${brightness})`;
-            } else {
-                strip.style.filter = 'none';
-            }
+            const blurAmount = speed * 8;
+            if (blurAmount > 0.5) { strip.style.filter = `blur(${blurAmount}px) brightness(${1 + speed * 0.3})`; }
+            else { strip.style.filter = 'none'; }
         }
-
-        /**
-         * 清除模糊
-         */
-        function clearBlur(reelIndex) {
-            const strip = stripEls[reelIndex];
-            strip.style.filter = 'none';
-        }
-
-        // ================================================================
-        //  灯效
-        // ================================================================
+        function clearBlur(reelIndex) { stripEls[reelIndex].style.filter = 'none'; }
 
         function setLights(state) {
-            if (state === 'idle') {
-                lights.forEach((l, i) => {
-                    l.className = 'reel-light';
-                    if (i % 2 === 0) l.classList.add('on');
-                });
-            } else if (state === 'spinning') {
-                lights.forEach((l) => {
-                    l.className = 'reel-light on';
-                });
-            } else if (state === 'result') {
-                lights.forEach((l) => {
-                    l.className = 'reel-light on green';
-                });
-            } else {
-                lights.forEach((l) => {
-                    l.className = 'reel-light';
-                });
-            }
+            if (state === 'idle') { lights.forEach((l, i) => { l.className = 'reel-light'; if (i % 2 === 0) l.classList.add('on'); }); }
+            else if (state === 'spinning') { lights.forEach(l => { l.className = 'reel-light on'; }); }
+            else if (state === 'result') { lights.forEach(l => { l.className = 'reel-light on green'; }); }
+            else { lights.forEach(l => { l.className = 'reel-light'; }); }
         }
-
-        // ================================================================
-        //  主流程
-        // ================================================================
 
         function startSpin() {
             if (isRunning) return;
-            if (NAMES.length === 0) {
-                statusText.textContent = '⚠️ 名单为空，请添加名字';
-                statusText.className = 'status-text';
-                return;
+            if (NAMES.length === 0) { statusText.textContent = '⚠️ 名单为空'; statusText.className = 'status-text'; return; }
+
+            initAudioContext(); resumeAudioContext();
+
+            // ★ 点击瞬间立即响起转盘音效 (精确调度，不会时响时不响)
+            if (soundEnabled) {
+                startGrainSound(SPIN_DURATION / 1000 + 0.5);
             }
 
             isRunning = true;
-
-            // 选择目标名字
             const targetName = getRandomName();
-
-            // 清空历史高亮
             document.querySelectorAll('.history-tag.highlight').forEach(el => el.classList.remove('highlight'));
-
-            // UI状态
             spinBtn.disabled = true;
             spinBtn.innerHTML = '<span class="btn-icon">🎰</span> 转动中...';
             statusText.textContent = '🎰 转盘飞转 · 好运快来！';
             statusText.className = 'status-text active';
             setLights('spinning');
 
-            // 设置每个转盘
-            for (let i = 0; i < 3; i++) {
-                setupReel(i);
-            }
-
-            // 依次启动三个转盘
+            for (let i = 0; i < 3; i++) setupReel(i);
             for (let i = 0; i < 3; i++) {
                 const delay = REEL_STOP_DELAYS[i];
-                // 每个转盘的时长略有不同，让停止更有层次
                 const duration = SPIN_DURATION + (i * 50);
                 animateReel(i, targetName, duration, 0);
             }
 
-            // 所有转盘停止后
             const totalDuration = SPIN_DURATION + REEL_STOP_DELAYS[2] + 600;
-            setTimeout(() => {
-                finishSpin(targetName);
-            }, totalDuration);
+            setTimeout(() => finishSpin(targetName), totalDuration);
         }
 
         function finishSpin(targetName) {
             if (!isRunning) return;
             isRunning = false;
 
-            // 确保所有转盘都显示正确
+            // ★ 抽到人: 强制立即停止所有转盘音效 (杜绝还在响)
+            forceStopAllGrain();
+
+            // ★ 播放正确的恭喜旋律 (4 #2 4 #2 1 -- 4 #2 4 #2 4)
+            if (soundEnabled) {
+                // 稍微延迟一点，等转盘音效彻底断开
+                setTimeout(() => {
+                    if (soundEnabled) playCongratsMelody();
+                }, 80);
+            }
+
             for (let i = 0; i < 3; i++) {
                 const strip = stripEls[i];
                 const items = strip.children;
                 strip.style.filter = 'none';
-
-                for (let j = 0; j < items.length; j++) {
-                    items[j].classList.remove('result-pop');
-                }
-
-                // 找到中间显示的那个item，设置为目标名字
+                for (let j = 0; j < items.length; j++) items[j].classList.remove('result-pop');
                 const itemH = reelItemHeights[i];
                 const finalY = parseFloat(strip.style.transform.replace('translateY(', '').replace('px)', '')) || 0;
                 const midIndex = Math.round(-finalY / itemH) + 1;
-
                 if (items[midIndex]) {
                     items[midIndex].textContent = targetName;
                     items[midIndex].classList.add('result-pop');
                     items[midIndex].style.color = '#ff8c42';
-                    items[midIndex].style.textShadow = '0 0 60px rgba(255,140,66,0.3), 0 0 120px rgba(255,140,66,0.1)';
+                    items[midIndex].style.textShadow = '0 0 60px rgba(255,140,66,0.3)';
                 }
-
                 reelEls[i].classList.remove('active');
                 reelEls[i].classList.add('stopped');
             }
 
             setLights('result');
-
             statusText.textContent = `🎉 恭喜 「${targetName}」 被点中！`;
             statusText.className = 'status-text result';
-
             spinBtn.disabled = false;
             spinBtn.innerHTML = '<span class="btn-icon">🎲</span> 再来一次';
-
             addHistory(targetName);
 
-            setTimeout(() => {
-                if (!isRunning) {
-                    setLights('idle');
-                }
-            }, 4500);
+            setTimeout(() => { if (!isRunning) setLights('idle'); }, 4500);
         }
 
-        // ================================================================
-        //  历史记录
-        // ================================================================
-
-        function addHistory(name) {
-            history.push(name);
-            renderHistory();
-        }
-
+        function addHistory(name) { history.push(name); renderHistory(); }
         function renderHistory() {
             historySection.innerHTML = '';
             if (history.length === 0) {
@@ -938,68 +827,34 @@
             });
         }
 
-        // ================================================================
-        //  事件
-        // ================================================================
-
         spinBtn.addEventListener('click', startSpin);
-
         document.addEventListener('keydown', (e) => {
-            if (e.key === ' ' || e.key === 'Space') {
-                e.preventDefault();
-                if (!spinBtn.disabled) spinBtn.click();
-            }
+            if (e.key === ' ' || e.key === 'Space') { e.preventDefault(); if (!spinBtn.disabled) spinBtn.click(); }
         });
-
         historySection.addEventListener('dblclick', () => {
-            history = [];
-            renderHistory();
+            history = []; renderHistory();
             if (!isRunning) {
                 statusText.textContent = '✨ 已清空记录';
                 statusText.className = 'status-text';
-                setTimeout(() => {
-                    if (!isRunning) {
-                        statusText.textContent = '点击按钮 · 幸运降临';
-                        statusText.className = 'status-text';
-                    }
-                }, 1200);
+                setTimeout(() => { if (!isRunning) { statusText.textContent = '点击按钮 · 幸运降临'; statusText.className = 'status-text'; } }, 1200);
             }
         });
 
-        // 窗口调整时重绘
         let resizeTimer = null;
         window.addEventListener('resize', () => {
             if (resizeTimer) clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                if (!isRunning) {
-                    for (let i = 0; i < 3; i++) {
-                        setupReel(i);
-                    }
-                }
-            }, 200);
+            resizeTimer = setTimeout(() => { if (!isRunning) for (let i = 0; i < 3; i++) setupReel(i); }, 200);
         });
 
-        // ================================================================
-        //  初始化
-        // ================================================================
-
-        // 等待DOM渲染完成再计算高度
         function init() {
-            for (let i = 0; i < 3; i++) {
-                setupReel(i);
-            }
+            for (let i = 0; i < 3; i++) setupReel(i);
             renderHistory();
             setLights('idle');
+            speakerTip.classList.add('hide');
         }
+        requestAnimationFrame(() => requestAnimationFrame(init));
 
-        // 使用 requestAnimationFrame 确保布局完成
-        requestAnimationFrame(() => {
-            requestAnimationFrame(init);
-        });
-
-        console.log('🎰 老虎机点名器 v4 (平滑缓动版)');
-        console.log(`📋 名单 (${NAMES.length}人):`, NAMES.join(', '));
-        console.log('💡 按 空格键 快速抽奖');
+        console.log('🎰 老虎机点名器 v6 (低频颗粒音效 + 正确旋律)');
     </script>
 </body>
 </html>
