@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>💕 小宇 & 小晴 · 纪念册 💕</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', 'Dancing Script', 'Waltograph', 'Comic Sans MS', cursive, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: linear-gradient(145deg, #ffe4ec 0%, #ffc0cb 40%, #ffb3c6 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 1rem 0.6rem 2.5rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* 漂浮的浪漫小星星/爱心背景 */
+    .floating-heart {
+      position: fixed;
+      pointer-events: none;
+      font-size: 1.6rem;
+      opacity: 0.3;
+      animation: floatUp 8s infinite linear;
+      z-index: 0;
+      color: #ff4d6d;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0.15;
+      }
+      50% {
+        opacity: 0.35;
+      }
+      100% {
+        transform: translateY(-20vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* 主卡片容器 */
+    .memory-book {
+      max-width: 1100px;
+      width: 100%;
+      background: rgba(255, 240, 245, 0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 50px 50px 35px 35px;
+      padding: 1.8rem 1.5rem 2rem;
+      box-shadow: 0 20px 40px rgba(255, 105, 135, 0.3),
+                  0 0 0 2px rgba(255, 255, 255, 0.6) inset,
+                  0 0 30px #ffb6c1;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      position: relative;
+      z-index: 10;
+      transition: box-shadow 0.3s;
+    }
+
+    /* 名字主题：大字号、居中、闪烁效果 */
+    .names-theme {
+      text-align: center;
+      margin-bottom: 0.2rem;
+      position: relative;
+    }
+
+    .names-theme h2 {
+      font-size: 3.6rem;
+      font-weight: 800;
+      color: #c53a6b;
+      text-shadow: 4px 4px 0 #ffd9e2, 0 0 25px #ffa5b9, 0 0 10px #ff6b8a;
+      letter-spacing: 3px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 0.2rem 0.6rem;
+      padding: 0 0.5rem;
+      font-family: 'Dancing Script', 'Segoe UI', cursive;
+      line-height: 1.2;
+      animation: namesPulse 2s infinite ease-in-out alternate;
+    }
+
+    @keyframes namesPulse {
+      0% { text-shadow: 4px 4px 0 #ffd9e2, 0 0 20px #ffa5b9, 0 0 6px #ff6b8a; }
+      100% { text-shadow: 4px 4px 0 #ffd9e2, 0 0 35px #ff4d6d, 0 0 15px #ff6b8a; }
+    }
+
+    .names-theme h2 .amp {
+      font-size: 2.8rem;
+      color: #e64a6b;
+      margin: 0 2px;
+      text-shadow: 2px 2px 0 #ffb6c1;
+      display: inline-block;
+      animation: ampBeat 1.8s infinite;
+    }
+
+    @keyframes ampBeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    /* 标题区域 */
+    .header {
+      text-align: center;
+      margin-bottom: 1.2rem;
+      position: relative;
+    }
+
+    .header h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #c53a6b;
+      text-shadow: 3px 3px 0 #ffd9e2, 0 0 20px #ffa5b9;
+      letter-spacing: 2px;
+      display: inline-block;
+      padding: 0 0.8rem;
+      border-radius: 50px;
+      font-family: 'Dancing Script', 'Segoe UI', cursive;
+    }
+
+    .header h1::before,
+    .header h1::after {
+      content: "❤️";
+      font-size: 1.5rem;
+      opacity: 0.8;
+      filter: drop-shadow(0 0 6px #ff4d6d);
+      margin: 0 0.3rem;
+      vertical-align: middle;
+    }
+
+    /* 纪念日胶囊 */
+    .anniversary-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #ffb3c6;
+      padding: 0.4rem 1.2rem;
+      border-radius: 50px;
+      color: #fff0f3;
+      font-weight: bold;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      box-shadow: 0 6px 12px #ff8da1, 0 0 0 3px #ffe4ec;
+      margin-top: 0.2rem;
+      border: 1px solid white;
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+    }
+
+    .anniversary-badge i {
+      font-style: normal;
+      font-size: 1.3rem;
+      line-height: 1;
+    }
+
+    /* ========== 图片墙：手机端两列布局 ========== */
+    .photo-wall {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* 手机端默认两列，每张占一半 */
+      gap: 1rem;
+      margin: 1.8rem 0 1.5rem;
+      justify-content: center;
+      align-items: center;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .photo-frame {
+      background: #fff0f3;
+      padding: 0.6rem 0.6rem 0.9rem;
+      border-radius: 24px 24px 16px 16px;
+      box-shadow: 0 12px 18px rgba(255, 80, 120, 0.25),
+                  0 0 0 3px #ffe4ec,
+                  0 0 0 5px rgba(255, 255, 255, 0.7);
+      transform: rotate(var(--rot, 0deg));
+      transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.2);
+      position: relative;
+      backdrop-filter: blur(2px);
+    }
+
+    .photo-frame:hover,
+    .photo-frame:active {
+      transform: rotate(0deg) scale(1.03);
+      box-shadow: 0 20px 28px #ff8da1, 0 0 0 4px #ffb6c1, 0 0 20px #ffb6c1;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 16px;
+      display: block;
+      background: #ffe4ec;
+      border: 2px solid #ffb6c1;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      transition: filter 0.3s;
+    }
+
+    .photo-frame:hover img,
+    .photo-frame:active img {
+      filter: brightness(1.03) saturate(1.1);
+    }
+
+    /* 小爱心贴在相框角上 */
+    .photo-frame::after {
+      content: "❤️";
+      position: absolute;
+      bottom: -5px;
+      right: 8px;
+      font-size: 1.3rem;
+      filter: drop-shadow(0 2px 4px #ff4d6d);
+      opacity: 0.9;
+      transform: rotate(10deg);
+    }
+
+    .photo-frame:nth-child(1) { --rot: -2deg; }
+    .photo-frame:nth-child(2) { --rot: 3deg; }
+    .photo-frame:nth-child(3) { --rot: -3deg; }
+    .photo-frame:nth-child(4) { --rot: 2deg; }
+    .photo-frame:nth-child(5) { --rot: -1.5deg; }
+    .photo-frame:nth-child(6) { --rot: 2.5deg; }
+
+    /* 祝福语互动区域 */
+    .bless-section {
+      margin-top: 1.8rem;
+      background: rgba(255, 228, 236, 0.7);
+      border-radius: 40px;
+      padding: 1.5rem 1rem 1.8rem;
+      text-align: center;
+      box-shadow: 0 10px 20px #ffb6c1 inset, 0 0 0 3px #fff0f3, 0 8px 18px #ff8da1;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .bless-section h2 {
+      font-size: 1.8rem;
+      color: #b33b5c;
+      margin-bottom: 1rem;
+      font-weight: 600;
+      text-shadow: 2px 2px 0 #ffe4ec;
+      font-family: 'Dancing Script', cursive;
+    }
+
+    .click-btn {
+      background: radial-gradient(circle at 20% 30%, #ff8da1, #e64a6b);
+      border: none;
+      padding: 0.9rem 2rem;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #fff5f7;
+      border-radius: 60px;
+      cursor: pointer;
+      box-shadow: 0 10px 0 #a12b4b, 0 8px 25px #ff4d6d;
+      transition: all 0.12s ease;
+      letter-spacing: 2px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 2px solid #ffe4ec;
+      text-shadow: 1px 1px 0 #b33b5c;
+      margin-bottom: 0.4rem;
+      transform: translateY(0);
+      font-family: 'Segoe UI', 'Dancing Script', cursive;
+    }
+
+    .click-btn:active {
+      transform: translateY(6px);
+      box-shadow: 0 4px 0 #a12b4b, 0 8px 20px #ff4d6d;
+    }
+
+    .click-btn i {
+      font-size: 1.6rem;
+      filter: drop-shadow(0 2px 2px #b33b5c);
+    }
+
+    /* 祝福语气泡容器 */
+    .bless-container {
+      min-height: 100px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 0.8rem 1rem;
+      margin-top: 1.2rem;
+      padding: 0.4rem;
+      transition: all 0.3s;
+    }
+
+    .bless-bubble {
+      background: #fff0f3;
+      color: #b33b5c;
+      padding: 0.8rem 1.5rem;
+      border-radius: 50px 50px 50px 10px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      box-shadow: 0 12px 18px -6px #ff8da1, 0 0 0 3px #ffd9e2;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      animation: bubblePop 0.55s cubic-bezier(0.18, 1.3, 0.6, 1) forwards,
+                 bubbleFloat 3s ease-in-out infinite alternate;
+      transform-origin: left bottom;
+      border: 1px solid white;
+      white-space: normal;
+      word-break: break-word;
+      line-height: 1.3;
+      max-width: 95%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      transition: opacity 0.4s;
+    }
+
+    .bless-bubble::before {
+      content: "💌";
+      font-size: 1.3rem;
+      margin-right: 2px;
+      filter: drop-shadow(0 2px 3px #ffb6c1);
+    }
+
+    @keyframes bubblePop {
+      0% { opacity: 0; transform: scale(0.4) translateY(30px); }
+      70% { opacity: 1; transform: scale(1.05) translateY(-6px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @keyframes bubbleFloat {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-6px); }
+    }
+
+    .bless-bubble.fade-out {
+      animation: bubbleVanish 0.4s ease-out forwards;
+    }
+
+    @keyframes bubbleVanish {
+      0% { opacity: 1; transform: scale(1) translateY(0); }
+      100% { opacity: 0; transform: scale(0.6) translateY(-20px); }
+    }
+
+    /* 底部落款 */
+    .footer-note {
+      margin-top: 1.5rem;
+      font-size: 1.1rem;
+      color: #b35e79;
+      text-align: center;
+      letter-spacing: 1.5px;
+      font-style: italic;
+      text-shadow: 0 2px 4px #ffd9e2;
+    }
+
+    /* ========== 手机端适配 ========== */
+    @media (max-width: 600px) {
+      body {
+        padding: 0.6rem 0.4rem 2rem;
+      }
+
+      .memory-book {
+        padding: 1.2rem 0.8rem 1.5rem;
+        border-radius: 36px 36px 28px 28px;
+      }
+
+      /* 名字主题：更巨大，适配手机 */
+      .names-theme h2 {
+        font-size: 2.8rem;
+        letter-spacing: 2px;
+        gap: 0.1rem 0.4rem;
+      }
+
+      .names-theme h2 .amp {
+        font-size: 2.2rem;
+      }
+
+      .header h1 {
+        font-size: 1.9rem;
+        letter-spacing: 1px;
+      }
+
+      .header h1::before,
+      .header h1::after {
+        font-size: 1.2rem;
+      }
+
+      .anniversary-badge {
+        font-size: 0.9rem;
+        padding: 0.35rem 0.9rem;
+        gap: 0.25rem;
+      }
+
+      .anniversary-badge i {
+        font-size: 1.1rem;
+      }
+
+      /* 手机端照片墙保持两列，每张占屏幕一半 */
+      .photo-wall {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+        margin: 1.4rem 0 1.2rem;
+        max-width: 100%;
+      }
+
+      .photo-frame {
+        padding: 0.5rem 0.5rem 0.7rem;
+        border-radius: 22px 22px 14px 14px;
+        box-shadow: 0 8px 14px rgba(255, 80, 120, 0.25),
+                    0 0 0 2px #ffe4ec,
+                    0 0 0 4px rgba(255, 255, 255, 0.7);
+      }
+
+      .photo-frame img {
+        border-radius: 14px;
+        border: 1.5px solid #ffb6c1;
+      }
+
+      .photo-frame::after {
+        font-size: 1.1rem;
+        bottom: -4px;
+        right: 6px;
+      }
+
+      .bless-section {
+        padding: 1.2rem 0.8rem 1.4rem;
+        border-radius: 32px;
+        margin-top: 1.4rem;
+      }
+
+      .bless-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0.8rem;
+      }
+
+      .click-btn {
+        font-size: 1.2rem;
+        padding: 0.8rem 1.5rem;
+        gap: 0.3rem;
+        box-shadow: 0 8px 0 #a12b4b, 0 6px 20px #ff4d6d;
+      }
+
+      .click-btn i {
+        font-size: 1.3rem;
+      }
+
+      .click-btn:active {
+        transform: translateY(5px);
+        box-shadow: 0 3px 0 #a12b4b, 0 6px 18px #ff4d6d;
+      }
+
+      .bless-container {
+        gap: 0.7rem 0.8rem;
+        margin-top: 1rem;
+        min-height: 80px;
+      }
+
+      .bless-bubble {
+        font-size: 0.95rem;
+        padding: 0.6rem 1rem;
+        border-radius: 30px 30px 30px 8px;
+      }
+
+      .bless-bubble::before {
+        font-size: 1.1rem;
+      }
+
+      .footer-note {
+        font-size: 0.95rem;
+        letter-spacing: 1px;
+        margin-top: 1.2rem;
+      }
+    }
+
+    /* 超小屏 (小于380px) 进一步优化 */
+    @media (max-width: 380px) {
+      .names-theme h2 {
+        font-size: 2.3rem;
+        gap: 0.1rem 0.3rem;
+      }
+
+      .names-theme h2 .amp {
+        font-size: 1.9rem;
+      }
+
+      .photo-wall {
+        gap: 0.6rem;
+      }
+
+      .photo-frame {
+        padding: 0.4rem 0.4rem 0.6rem;
+        border-radius: 18px 18px 12px 12px;
+      }
+
+      .photo-frame::after {
+        font-size: 1rem;
+        right: 4px;
+      }
+
+      .click-btn {
+        font-size: 1rem;
+        padding: 0.6rem 1.1rem;
+      }
+
+      .bless-bubble {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 漂浮爱心背景 (由JS动态生成) -->
+  
+  <div class="memory-book">
+    <!-- 名字主题：两个大大的名字 -->
+    <div class="names-theme">
+      <h2>小宇 <span class="amp">&</span> 小晴</h2>
+    </div>
+
+    <!-- 标题 + 纪念日 -->
+    <div class="header">
+      <h1>Lᵒᵛᵉ 纪念册</h1>
+      <div class="anniversary-badge">
+        <i>📅</i> 11月6日 · 我们的纪念日 <i>💖</i>
+      </div>
+    </div>
+
+    <!-- 照片墙 : 6张图片，手机端每行两张占屏 -->
+    <div class="photo-wall">
+      <div class="photo-frame">
+        <img src="1.webp" alt="couple photo 1">
+      </div>
+      <div class="photo-frame">
+        <img src="2.webp" alt="couple photo 2">
+      </div>
+      <div class="photo-frame">
+        <img src="3.webp" alt="couple photo 3">
+      </div>
+      <div class="photo-frame">
+        <img src="4.webp" alt="couple photo 4">
+      </div>
+      <div class="photo-frame">
+        <img src="4p.webp" alt="couple photo 4 extra">
+      </div>
+      <div class="photo-frame">
+        <img src="5.webp" alt="couple photo 5">
+      </div>
+    </div>
+
+    <!-- 祝福语互动区 -->
+    <div class="bless-section">
+      <h2>✨ 点击送出祝福 ✨</h2>
+      <button class="click-btn" id="blessBtn">
+        <i>💖</i> 点我 · 祝福 <i>💖</i>
+      </button>
+      <div class="bless-container" id="blessContainer">
+        <!-- 祝福语气泡会动态插入到这里 -->
+      </div>
+      <div class="footer-note">—— 小宇 & 小晴 · 长长久久 ——</div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ---------- 1. 漂浮爱心背景生成 ----------
+      function createFloatingHearts() {
+        const hearts = ['❤️', '💕', '💖', '💗', '💓', '💞', '🌸', '✨', '💝'];
+        const count = window.innerWidth < 600 ? 12 : 22;
+        for (let i = 0; i < count; i++) {
+          const heart = document.createElement('div');
+          heart.className = 'floating-heart';
+          heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+          heart.style.left = Math.random() * 100 + '%';
+          heart.style.animationDelay = Math.random() * 8 + 's';
+          heart.style.animationDuration = 7 + Math.random() * 8 + 's';
+          heart.style.fontSize = (1 + Math.random() * 1.6) + 'rem';
+          heart.style.opacity = 0.1 + Math.random() * 0.25;
+          document.body.appendChild(heart);
+        }
+      }
+      createFloatingHearts();
+
+      // ---------- 2. 祝福语词库 ----------
+      const blessingMessages = [
+        '小宇❤️小晴，长长久久✨',
+        '愿我们的爱，如星辰永恒✨',
+        '长长久久，岁岁有你❤️',
+        '遇见你，是我最美丽的意外💕',
+        '你是我所有温柔的来源💗',
+        '朝朝暮暮，不离不弃💞',
+        '爱你，从心动到古稀💓',
+        '11·6 纪念日快乐！永远甜蜜💖',
+        '你是我生命里最甜的糖🍬',
+        '愿得一人心，白首不相离💝',
+        '每一个明天，都想和你一起💑',
+        '你是我的今天，以及所有的明天✨',
+        '爱你如初，疼你入骨💕',
+        '浪漫至死不渝，温柔绝对屈服🌸',
+        '手牵手，一起走到时间尽头💞',
+        '有你的日子，每天都是情人节💖',
+        '长长久久，不只是一句祝福💗',
+        '你是我藏在心底的欢喜💓',
+        '愿我们碎碎念念，岁岁年年💝',
+        '心动不止，爱你不息❤️',
+        '这一秒，下一秒，永远爱你💕',
+        '小宇 & 小晴，天生一对💑',
+        '晴空万里，只想要你☀️',
+        '宇宙山河浪漫，生活点滴温暖💫',
+        '你是我宇宙里最亮的星🌟',
+        '一起看遍世间浪漫🌈',
+        '牵着你的手，就是整个宇宙🌍',
+        '小晴的笑，是小宇的心跳💓'
+      ];
+
+      // ---------- 3. 交互逻辑 ----------
+      const container = document.getElementById('blessContainer');
+      const blessBtn = document.getElementById('blessBtn');
+
+      function getRandomBlessing() {
+        return blessingMessages[Math.floor(Math.random() * blessingMessages.length)];
+      }
+
+      function spawnBlessingBubble() {
+        const bubble = document.createElement('div');
+        bubble.className = 'bless-bubble';
+        bubble.textContent = getRandomBlessing();
+        
+        container.appendChild(bubble);
+
+        // 限制气泡数量
+        const bubbles = container.querySelectorAll('.bless-bubble');
+        if (bubbles.length > 20) {
+          const first = bubbles[0];
+          if (first._vanishTimer) clearTimeout(first._vanishTimer);
+          if (first._removeTimer) clearTimeout(first._removeTimer);
+          first.remove();
+        }
+
+        // 2.5秒后消失
+        const vanishTimer = setTimeout(() => {
+          bubble.classList.add('fade-out');
+          const removeTimer = setTimeout(() => {
+            if (bubble.parentNode) bubble.remove();
+          }, 400);
+          bubble._removeTimer = removeTimer;
+        }, 2500);
+
+        bubble._vanishTimer = vanishTimer;
+      }
+
+      blessBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        spawnBlessingBubble();
+        blessBtn.style.transform = 'scale(0.96) translateY(4px)';
+        blessBtn.style.boxShadow = '0 4px 0 #a12b4b, 0 8px 20px #ff4d6d';
+        setTimeout(() => {
+          blessBtn.style.transform = '';
+          blessBtn.style.boxShadow = '';
+        }, 120);
+      });
+
+      // 加载后的欢迎气泡
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          const welcomeBubble = document.createElement('div');
+          welcomeBubble.className = 'bless-bubble';
+          welcomeBubble.textContent = '💝 小宇 & 小晴 · 11·6 纪念日快乐 💝';
+          container.appendChild(welcomeBubble);
+          setTimeout(() => {
+            welcomeBubble.classList.add('fade-out');
+            setTimeout(() => {
+              if (welcomeBubble.parentNode) welcomeBubble.remove();
+            }, 400);
+          }, 3000);
+        }, 500);
+      });
+    })();
+  </script>
+</body>
+</html>
